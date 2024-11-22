@@ -10,9 +10,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="698a92e0-11d4-4730-bcee-ddaf3154db46" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/Data/TCGGDBContext.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/Models/Board.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/Models/Card.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/Models/Deck.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/Models/Match.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/Models/Player.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/Models/PlayerCard.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/TCGGAPI.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/TCGGAPI.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../planering/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../planering/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/appsettings.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,33 +35,36 @@
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="Toolset" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
   <component name="ProjectId" id="2pA6d5Hbkp6j6H2UYbqcf3dHdtk" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.TCGGAPI: IIS Express.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.TCGGAPI: IIS Express.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "feat/models",
+    "ignore.virus.scanning.warn.message": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager" selected=".NET Launch Settings Profile.TCGGAPI: IIS Express">
     <configuration name="TCGGAPI: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/TCGGAPI/TCGGAPI.csproj" />
@@ -104,12 +115,13 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="c7b7d559-f80a-422f-8f2b-011a2225bbbc" name="Changes" comment="" />
+      <changelist id="698a92e0-11d4-4730-bcee-ddaf3154db46" name="Changes" comment="" />
       <created>1732196616280</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1732196616280</updated>
       <workItem from="1732196617310" duration="345000" />
+      <workItem from="1732277062611" duration="3991000" />
     </task>
     <servers />
   </component>
