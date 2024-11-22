@@ -30,10 +30,10 @@ namespace TCGGAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Player1Id")
+                    b.Property<int?>("Player1Id")
                         .HasColumnType("int");
 
-                    b.Property<int>("Player2Id")
+                    b.Property<int?>("Player2Id")
                         .HasColumnType("int");
 
                     b.Property<int>("Turns")
@@ -72,21 +72,11 @@ namespace TCGGAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PlayerId1")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("BoardId");
 
                     b.HasIndex("DeckId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.HasIndex("PlayerId1");
 
                     b.ToTable("Cards");
 
@@ -172,8 +162,8 @@ namespace TCGGAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.HasKey("Id");
 
@@ -182,19 +172,46 @@ namespace TCGGAPI.Migrations
                     b.ToTable("Players");
                 });
 
+            modelBuilder.Entity("TCGGAPI.Models.PlayerCard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CardId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsInHand")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsOnBoard")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CardId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("PlayerCards");
+                });
+
             modelBuilder.Entity("TCGGAPI.Models.Board", b =>
                 {
                     b.HasOne("TCGGAPI.Models.Player", "Player1")
                         .WithMany()
                         .HasForeignKey("Player1Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("TCGGAPI.Models.Player", "Player2")
                         .WithMany()
                         .HasForeignKey("Player2Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Player1");
 
@@ -210,14 +227,6 @@ namespace TCGGAPI.Migrations
                     b.HasOne("TCGGAPI.Models.Deck", null)
                         .WithMany("Cards")
                         .HasForeignKey("DeckId");
-
-                    b.HasOne("TCGGAPI.Models.Player", null)
-                        .WithMany("CardOnBoard")
-                        .HasForeignKey("PlayerId");
-
-                    b.HasOne("TCGGAPI.Models.Player", null)
-                        .WithMany("Hand")
-                        .HasForeignKey("PlayerId1");
                 });
 
             modelBuilder.Entity("TCGGAPI.Models.Deck", b =>
@@ -249,9 +258,31 @@ namespace TCGGAPI.Migrations
                     b.Navigation("MatchDeck");
                 });
 
+            modelBuilder.Entity("TCGGAPI.Models.PlayerCard", b =>
+                {
+                    b.HasOne("TCGGAPI.Models.Card", "Card")
+                        .WithMany("PlayerCards")
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TCGGAPI.Models.Player", "Player")
+                        .WithMany("PlayerCards")
+                        .HasForeignKey("PlayerId");
+
+                    b.Navigation("Card");
+
+                    b.Navigation("Player");
+                });
+
             modelBuilder.Entity("TCGGAPI.Models.Board", b =>
                 {
                     b.Navigation("CombatZone");
+                });
+
+            modelBuilder.Entity("TCGGAPI.Models.Card", b =>
+                {
+                    b.Navigation("PlayerCards");
                 });
 
             modelBuilder.Entity("TCGGAPI.Models.Deck", b =>
@@ -261,11 +292,9 @@ namespace TCGGAPI.Migrations
 
             modelBuilder.Entity("TCGGAPI.Models.Player", b =>
                 {
-                    b.Navigation("CardOnBoard");
-
                     b.Navigation("Decks");
 
-                    b.Navigation("Hand");
+                    b.Navigation("PlayerCards");
                 });
 #pragma warning restore 612, 618
         }
