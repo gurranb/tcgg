@@ -46,5 +46,7 @@ app.MapPost("/attackCard", (GameManager gm, int attackCardId, int defenseCardId,
     return gm.AttackCard(attackCardId, defenseCardId, playerId);
 });
 
+// TODO: WIN OR LOSE condition
+
 app.Run();
 

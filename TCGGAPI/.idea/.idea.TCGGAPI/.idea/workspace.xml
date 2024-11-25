@@ -10,19 +10,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="698a92e0-11d4-4730-bcee-ddaf3154db46" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/TCGGAPI/GameManager.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TCGGAPI/Models/DeckCard.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/config/applicationhost.config" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/config/applicationhost.config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Data/TCGGDBContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Data/TCGGDBContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Migrations/20241122135835_Initial.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Migrations/20241122135835_Initial.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Migrations/TCGGDBContextModelSnapshot.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/Board.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/Board.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/Deck.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/Deck.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/Match.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/Match.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/PlayerCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/PlayerCard.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -135,7 +122,7 @@
       <workItem from="1732196617310" duration="345000" />
       <workItem from="1732277062611" duration="3991000" />
       <workItem from="1732281252808" duration="2543000" />
-      <workItem from="1732536083951" duration="10032000" />
+      <workItem from="1732536083951" duration="10331000" />
     </task>
     <servers />
   </component>
