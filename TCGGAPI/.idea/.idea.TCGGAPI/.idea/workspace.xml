@@ -10,13 +10,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="698a92e0-11d4-4730-bcee-ddaf3154db46" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/GameManager.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/Models/DeckCard.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/config/applicationhost.config" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/config/applicationhost.config" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/Data/TCGGDBContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Data/TCGGDBContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Migrations/20241122130520_Initial.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Migrations/20241122130520_Initial.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/Migrations/20241122135835_Initial.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/Migrations/20241122135835_Initial.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/Migrations/TCGGDBContextModelSnapshot.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/Board.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/Board.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/Deck.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/Deck.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/Match.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/Match.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/Player.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/PlayerCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/PlayerCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +34,16 @@
     <option name="firstShow" value="false" />
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/.." value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3684e888fd93508450e2f4b0d7d38bee648cba98882592491596fc79375185f/SwaggerMiddleware.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/781ebca67bd71532948352c2c24f8db410449e3c21f7191a17bf21348cd4fed4/SwaggerUIMiddleware.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -46,18 +62,18 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    ".NET Launch Settings Profile.TCGGAPI: IIS Express.executor": "Run",
+    ".NET Launch Settings Profile.TCGGAPI: IIS Express.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.codeium.enabled": "true",
-    "git-widget-placeholder": "feat/db",
+    "git-widget-placeholder": "feat/playerData",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "com.codeium.AppSettingsConfigurable",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -119,6 +135,7 @@
       <workItem from="1732196617310" duration="345000" />
       <workItem from="1732277062611" duration="3991000" />
       <workItem from="1732281252808" duration="2543000" />
+      <workItem from="1732536083951" duration="10032000" />
     </task>
     <servers />
   </component>
