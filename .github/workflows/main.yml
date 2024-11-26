@@ -20,3 +20,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
+
+      - name: Build the project
+        run: npm run build
+        
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
