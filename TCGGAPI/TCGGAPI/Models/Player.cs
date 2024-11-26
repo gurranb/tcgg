@@ -5,23 +5,10 @@ namespace TCGGAPI.Models;
 public class Player
 {
     public int Id { get; set; }
-    [MaxLength(25)]
-    public string? Name { get; set; } 
     public int Health { get; set; }
-    public List<Card> Hand { get; set; } = new List<Card>();
-    
-    
-    
-    // todo: move to User model
-    public List<Deck> Decks { get; set; } = new List<Deck>();
-    public Deck MatchDeck { get; set; } = new Deck();
-    
-    public List<PlayerCard> PlayerCards { get; set; } = new List<PlayerCard>();
+    public string Name { get; set; }
     public int MatchDeckId { get; set; }
-    
-    // public int id
-    // public int cardId 
-    // public int playerId 
-    
-    
+    public List<CardDefintion> Hand { get; set; } = new List<CardDefintion>();
+    public List<CardDefintion> Graveyard { get; set; } = new List<CardDefintion>();
+    public Deck MatchDeck { get; set; } = new Deck();
 }

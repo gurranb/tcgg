@@ -64,7 +64,7 @@ public class GameManager
         }
     }
 
-    public Card DrawCard(int playerId)
+    public CardDefintion DrawCard(int playerId)
     {
         CheckGameStatus();
         CheckTurn(playerId);
@@ -73,12 +73,13 @@ public class GameManager
         // TODO: Validate correct player
 
         // TODO: get actual card from db
-        var card = new Card
+        var card = new CardDefintion
         {
             Id = 1,
             Name = "Human",
             Health = Random.Next(1,3),
-            Attack = 1
+            Attack = 1,
+            Rarity = 0
         };
 
         // TODO: which player?
@@ -91,7 +92,7 @@ public class GameManager
         return card;
     }
 
-    public Card PlayCardToBoard(int playerId, int cardId)
+    public CardDefintion PlayCardToBoard(int playerId, int cardId)
     {
         CheckGameStatus();
         CheckTurn(playerId);
@@ -137,8 +138,8 @@ public class GameManager
 
 
     var player = GetPlayer(playerId);
-    var attackerCard = new Card();
-    var defenderCard = new Card();
+    var attackerCard = new CardDefintion();
+    var defenderCard = new CardDefintion();
 
     if (Match.Player1 == player)
     {
@@ -204,7 +205,7 @@ public class GameManager
 
         var player = GetPlayer(playerId);
         var enemy = GetEnemy(playerId);
-        var card = new Card();
+        var card = new CardDefintion();
 
         if (Match.Player1.Id == playerId)
         {
