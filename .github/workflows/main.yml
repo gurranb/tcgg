@@ -13,7 +13,7 @@ jobs:
   build-and-test:
     runs-on: ubuntu-latest
     env:
-     MY_PATH: tcgg/TCGGAPI/TCGGAPI
+     MY_PATH: TCGGAPI/TCGGAPI.sln
       
     steps:
       - name: Checkout code
