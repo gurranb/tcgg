@@ -25,8 +25,5 @@ jobs:
       - name: Build the project
         run: dotnet build "$MY_PATH" --configuration Release
         
-      - name: Change directory to test project
-        run: cd TCGGAPI.Tests
-
       - name: Run tests
-        run: dotnet test "TCGGAPI.Tests.csproj" --configuration Release
+        run: dotnet test "$MY_TEST" --configuration Release
