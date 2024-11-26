@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TCGGAPI;
 using TCGGAPI.Data;
+using TCGGAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -11,6 +12,7 @@ builder.Services.AddDbContext<TCGGDBContext>(options =>
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<ICardService, CardService>();
 builder.Services.AddSingleton<GameManager>();
 
 var app = builder.Build();
@@ -27,7 +29,7 @@ app.UseHttpsRedirection();
 
 app.MapGet("/game", (GameManager gm, int coinToss) =>
 {
-    return gm.StartMatch(coinToss);
+   gm.StartMatch(coinToss);
 });
 
 app.MapGet("/reset", (GameManager gm, int coinToss) =>
@@ -36,7 +38,7 @@ app.MapGet("/reset", (GameManager gm, int coinToss) =>
 });
 
 app.MapGet("/getMatch", (GameManager gm) => {
-    return gm.Match;
+    return gm.GetMatch();
 });
 
 app.MapGet("/draw", (GameManager gm, int PlayerId) =>
@@ -46,7 +48,7 @@ app.MapGet("/draw", (GameManager gm, int PlayerId) =>
 
 app.MapPost("/playCard", (GameManager gm, int playerId, int cardId) =>
 {
-    return gm.PlayCardToBoard(playerId, cardId);
+    gm.PlayCardToBoard(playerId, cardId);
 });
 
 app.MapPost("/attackCard", (GameManager gm, int attackCardId, int defenseCardId, int playerId) =>
