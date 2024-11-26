@@ -14,24 +14,17 @@ jobs:
     runs-on: ubuntu-latest
     env:
      MY_PATH: TCGGAPI/TCGGAPI.sln
+     MY_TEST: TCGGAPI/TCGGAPI.Tests/CardTest.cs
       
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-
+        uses: actions/checkout@v4
+        
       - name: Restore 
         run: dotnet restore $MY_PATH
 
       - name: Build the project
         run: dotnet build $MY_PATH --configuration Release
         
-      - name: Install dependencies
-        run: npm install
-
       - name: Run tests
-        run: npm test
+        run: dotnet test $MY_TEST --configuration Release
