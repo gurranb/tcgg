@@ -10,10 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="698a92e0-11d4-4730-bcee-ddaf3154db46" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/Services/CardService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/Services/MatchService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/config/applicationhost.config" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/config/applicationhost.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI.sln" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/Data/TCGGDBContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Data/TCGGDBContext.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/Match.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/Match.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,12 +35,12 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3684e888fd93508450e2f4b0d7d38bee648cba98882592491596fc79375185f/SwaggerMiddleware.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/781ebca67bd71532948352c2c24f8db410449e3c21f7191a17bf21348cd4fed4/SwaggerUIMiddleware.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/be6e1abbf5fe16676fc5dbf3473795ec443ed8e2d215698ae3d4ac81f99298a/EqualityAsserts.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
@@ -54,10 +56,12 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     ".NET Launch Settings Profile.TCGGAPI: IIS Express.executor": "Run",
+    "2632f977-66f0-4f24-9be9-a407d7ad534c.executor": "Debug",
+    "5c1818e9-c671-40e4-bb31-8b4a8ddd6dda.executor": "Debug",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.codeium.enabled": "true",
-    "git-widget-placeholder": "feat/playerData",
+    "git-widget-placeholder": "test-setup",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -128,7 +132,7 @@
       <workItem from="1732281252808" duration="2543000" />
       <workItem from="1732536083951" duration="10331000" />
       <workItem from="1732610052611" duration="13000" />
-      <workItem from="1732610077164" duration="2435000" />
+      <workItem from="1732610077164" duration="21236000" />
     </task>
     <servers />
   </component>
