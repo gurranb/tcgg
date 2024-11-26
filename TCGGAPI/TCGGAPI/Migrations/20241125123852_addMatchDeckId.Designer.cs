@@ -12,8 +12,8 @@ using TCGGAPI.Data;
 namespace TCGGAPI.Migrations
 {
     [DbContext(typeof(TCGGDBContext))]
-    [Migration("20241122135835_Initial")]
-    partial class Initial
+    [Migration("20241125123852_addMatchDeckId")]
+    partial class addMatchDeckId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,9 +65,6 @@ namespace TCGGAPI.Migrations
                     b.Property<int?>("BoardId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DeckId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Health")
                         .HasColumnType("int");
 
@@ -78,8 +75,6 @@ namespace TCGGAPI.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BoardId");
-
-                    b.HasIndex("DeckId");
 
                     b.ToTable("Cards");
 
@@ -123,6 +118,29 @@ namespace TCGGAPI.Migrations
                     b.HasIndex("PlayerId");
 
                     b.ToTable("Decks");
+                });
+
+            modelBuilder.Entity("TCGGAPI.Models.DeckCard", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CardId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DeckId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CardId");
+
+                    b.HasIndex("DeckId");
+
+                    b.ToTable("DeckCards");
                 });
 
             modelBuilder.Entity("TCGGAPI.Models.Match", b =>
@@ -226,10 +244,6 @@ namespace TCGGAPI.Migrations
                     b.HasOne("TCGGAPI.Models.Board", null)
                         .WithMany("CombatZone")
                         .HasForeignKey("BoardId");
-
-                    b.HasOne("TCGGAPI.Models.Deck", null)
-                        .WithMany("Cards")
-                        .HasForeignKey("DeckId");
                 });
 
             modelBuilder.Entity("TCGGAPI.Models.Deck", b =>
@@ -237,6 +251,25 @@ namespace TCGGAPI.Migrations
                     b.HasOne("TCGGAPI.Models.Player", null)
                         .WithMany("Decks")
                         .HasForeignKey("PlayerId");
+                });
+
+            modelBuilder.Entity("TCGGAPI.Models.DeckCard", b =>
+                {
+                    b.HasOne("TCGGAPI.Models.Card", "Card")
+                        .WithMany()
+                        .HasForeignKey("CardId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TCGGAPI.Models.Deck", "Deck")
+                        .WithMany("Cards")
+                        .HasForeignKey("DeckId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Card");
+
+                    b.Navigation("Deck");
                 });
 
             modelBuilder.Entity("TCGGAPI.Models.Match", b =>

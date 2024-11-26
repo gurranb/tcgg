@@ -28,6 +28,27 @@ namespace TCGGAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Cards",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Health = table.Column<int>(type: "int", nullable: false),
+                    Attack = table.Column<int>(type: "int", nullable: false),
+                    BoardId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cards", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cards_Boards_BoardId",
+                        column: x => x.BoardId,
+                        principalTable: "Boards",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Matches",
                 columns: table => new
                 {
@@ -48,25 +69,23 @@ namespace TCGGAPI.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Cards",
+                name: "DeckCards",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Health = table.Column<int>(type: "int", nullable: false),
-                    Attack = table.Column<int>(type: "int", nullable: false),
-                    BoardId = table.Column<int>(type: "int", nullable: true),
-                    DeckId = table.Column<int>(type: "int", nullable: true)
+                    DeckId = table.Column<int>(type: "int", nullable: false),
+                    CardId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cards", x => x.Id);
+                    table.PrimaryKey("PK_DeckCards", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Cards_Boards_BoardId",
-                        column: x => x.BoardId,
-                        principalTable: "Boards",
-                        principalColumn: "Id");
+                        name: "FK_DeckCards_Cards_CardId",
+                        column: x => x.CardId,
+                        principalTable: "Cards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -133,12 +152,12 @@ namespace TCGGAPI.Migrations
 
             migrationBuilder.InsertData(
                 table: "Cards",
-                columns: new[] { "Id", "Attack", "BoardId", "DeckId", "Health", "Name" },
+                columns: new[] { "Id", "Attack", "BoardId", "Health", "Name" },
                 values: new object[,]
                 {
-                    { 1, 1, null, null, 1, "Human" },
-                    { 2, 1, null, null, 2, "Beast" },
-                    { 3, 2, null, null, 1, "Elf" }
+                    { 1, 1, null, 1, "Human" },
+                    { 2, 1, null, 2, "Beast" },
+                    { 3, 2, null, 1, "Elf" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -157,8 +176,13 @@ namespace TCGGAPI.Migrations
                 column: "BoardId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Cards_DeckId",
-                table: "Cards",
+                name: "IX_DeckCards_CardId",
+                table: "DeckCards",
+                column: "CardId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DeckCards_DeckId",
+                table: "DeckCards",
                 column: "DeckId");
 
             migrationBuilder.CreateIndex(
@@ -203,11 +227,12 @@ namespace TCGGAPI.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Cards_Decks_DeckId",
-                table: "Cards",
+                name: "FK_DeckCards_Decks_DeckId",
+                table: "DeckCards",
                 column: "DeckId",
                 principalTable: "Decks",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Decks_Players_PlayerId",
@@ -223,6 +248,9 @@ namespace TCGGAPI.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Decks_Players_PlayerId",
                 table: "Decks");
+
+            migrationBuilder.DropTable(
+                name: "DeckCards");
 
             migrationBuilder.DropTable(
                 name: "Matches");

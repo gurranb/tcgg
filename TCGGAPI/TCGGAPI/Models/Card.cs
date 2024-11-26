@@ -6,5 +6,4 @@ public class Card
     public string Name { get; set; }
     public int Health { get; set; }
     public int Attack { get; set; }
-    public List<PlayerCard> PlayerCards { get; set; } = new List<PlayerCard>();
 }

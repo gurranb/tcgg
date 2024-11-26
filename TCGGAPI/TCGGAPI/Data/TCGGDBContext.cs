@@ -12,7 +12,7 @@ public class TCGGDBContext : DbContext
     public DbSet<Player> Players { get; set; }
     public DbSet<Board> Boards { get; set; }
     public DbSet<Match> Matches { get; set; }
-    public DbSet<PlayerCard> PlayerCards { get; set; }
+ 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -38,6 +38,12 @@ public class TCGGDBContext : DbContext
             new Card { Id = 2, Name = "Beast", Health = 2, Attack = 1 },
             new Card { Id = 3, Name = "Elf", Health = 1, Attack = 2 }
         );
-        
+
+        // Create a deck of cards
+        // modelBuilder.Entity<Player>().HasData(
+        //     new Player { Id = 1, Name = "Player 1", MatchDeckId = 1 },
+        //     new Player { Id = 2, Name = "Player 2", MatchDeckId = 1 }
+        // );
+
     }
 }
