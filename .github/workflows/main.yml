@@ -7,24 +7,26 @@ on:
   pull_request:
     branches:
       - main
-   
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
     env:
-     MY_PATH: TCGGAPI/TCGGAPI.sln
-     MY_TEST: TCGGAPI/TCGGAPI.Tests/TCGGAPI.Tests.csproj
+      MY_PATH: TCGGAPI/TCGGAPI.sln
+      MY_TEST: TCGGAPI/TCGGAPI.Tests/TCGGAPI.Tests.csproj
       
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
-      - name: Restore 
-        run: dotnet restore $MY_PATH
+
+      - name: Restore .NET dependencies
+        run: dotnet restore "$MY_PATH"
 
       - name: Build the project
-        run: dotnet build $MY_PATH --configuration Release
+        run: dotnet build "$MY_PATH" --configuration Release
         
+      - name: Change directory to test project
+        run: cd TCGGAPI/TCGGAPI.Tests
+
       - name: Run tests
-        run: dotnet test $MY_TEST --configuration Release
+        run: dotnet test "TCGGAPI.Tests.csproj" --configuration Release
