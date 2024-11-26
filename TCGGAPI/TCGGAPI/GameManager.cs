@@ -5,59 +5,86 @@ namespace TCGGAPI;
 
 public class GameManager
 {
+    public Random Random = new Random();
     public Player P1 { get; set; }
     public Player P2 { get; set; }
-
     public Match Match { get; set; }
 
     public GameManager()
     {
-        // TODO: Config Players, Add matchDeck
-        P1 = new Player();
-        P1.Id = 1;
-        P1.Name = "Player 1";
+        
+    }
 
-        P2 = new Player();
-        P2.Id = 2;
-        P2.Name = "Player 2";
-
-
+    public Match StartMatch(int coinToss)
+    {
+        var coinTossResult = Random.Next(0, 2);
+        P1 = CreatePlayer(1, "p1");
+        P2 = CreatePlayer(2, "p2");
+        // TODO: Config match
         Match = new Match();
-
-
+        Match.Board = new Board() { Player1 = P1, Player2 = P2 };
         Match.Player1 = P1;
         Match.Player2 = P2;
+        if (coinToss == coinTossResult)
+        {
+            Match.Board.CurrentPlayerId = P1.Id;
+        }
+        else
+        {
+            Match.Board.CurrentPlayerId = P2.Id;
+        }
+        
+        return Match;
+    }
+    
+    public void EndTurn(int playerId)
+    {
+        CheckGameStatus();
+        CheckTurn(playerId);
+        
+        Match.Board.CurrentPlayerId = playerId == 1 ? 2 : 1;
+        Match.Board.Turns++;
     }
 
-    public static void StartMatch()
+    private Player CreatePlayer(int id, string name)
     {
-        // TODO: Config match
+        return new Player{Id = id, Name = name, Health = 10};   
+    }
+    
+    public void RestartMatch(int coinToss)
+    {
+        StartMatch(coinToss);
     }
 
-    public void TakeTurn(Match match, Player player)
+    public void CheckTurn(int playerId)
     {
-        // TODO: Config turn
+        if (Match.Board.CurrentPlayerId != playerId)
+        {
+            throw new InvalidOperationException("Inte din tur");
+        }
     }
 
-    public Card DrawCard(int PlayerId)
+    public Card DrawCard(int playerId)
     {
+        CheckGameStatus();
+        CheckTurn(playerId);
+
         // TODO: Add card to board
         // TODO: Validate correct player
 
         // TODO: get actual card from db
-        Random rnd = new Random();
         var card = new Card
         {
             Id = 1,
             Name = "Human",
-            Health = 1,
+            Health = Random.Next(1,3),
             Attack = 1
         };
 
         // TODO: which player?
-        if (PlayerId == 1)
+        if (playerId == 1)
             P1.Hand.Add(card);
-        else if (PlayerId == 2)
+        else if (playerId == 2)
             P2.Hand.Add(card);
 
         // TODO: Return card
@@ -66,6 +93,9 @@ public class GameManager
 
     public Card PlayCardToBoard(int playerId, int cardId)
     {
+        CheckGameStatus();
+        CheckTurn(playerId);
+
         // TODO: Validate correct player
         if (playerId == 1)
         {
@@ -100,40 +130,139 @@ public class GameManager
         return null;
     }
 
-    public Card AttackCard(int attackCardId, int defenseCardId, int playerId)
+    public void AttackCard(int attackCardId, int defenseCardId, int playerId)
     {
-        // TODO: Config attack
-        var attackerCard = Match.Board.Player1Field.FirstOrDefault(c => c.Id == attackCardId);
-        var defenderCard = Match.Board.Player2Field.FirstOrDefault(c => c.Id == defenseCardId);
-        
-        if (attackCardId != null && defenseCardId != null)
+    CheckGameStatus();
+    CheckTurn(playerId);
+
+
+    var player = GetPlayer(playerId);
+    var attackerCard = new Card();
+    var defenderCard = new Card();
+
+    if (Match.Player1 == player)
+    {
+        attackerCard = Match.Board.Player1Field.FirstOrDefault(c => c.Id == attackCardId);
+        defenderCard = Match.Board.Player2Field.FirstOrDefault(c => c.Id == defenseCardId);
+    }
+    else if (Match.Player2 == player)
+    {
+        attackerCard = Match.Board.Player2Field.FirstOrDefault(c => c.Id == attackCardId);
+        defenderCard = Match.Board.Player1Field.FirstOrDefault(c => c.Id == defenseCardId);        
+    }
+
+
+    if (attackerCard == null || defenderCard == null)
+    {
+        throw new ArgumentException("Error. Invalid card for attack");
+    }
+
+    attackerCard.Health -= defenderCard.Attack;
+    defenderCard.Health -= attackerCard.Attack;
+
+    if (attackerCard.Health <= 0 && defenderCard.Health <= 0)
+    {
+        if (Match.Board.Player1 == player)
+        {
+            Match.Board.Player1Field.Remove(attackerCard);
+            Match.Board.Player2Field.Remove(defenderCard);
+        }
+        else
+        {
+            Match.Board.Player2Field.Remove(attackerCard);
+            Match.Board.Player1Field.Remove(defenderCard);
+        }
+    }
+    else if (attackerCard.Health <= 0)
+    {
+        if (Match.Board.Player1 == player)
+        {
+            Match.Board.Player1Field.Remove(attackerCard);
+        }
+        else
+        {
+            Match.Board.Player2Field.Remove(attackerCard);
+        }
+    }
+    else if (defenderCard.Health <= 0)
+    {
+        if (Match.Board.Player1 == player)
         {
             Match.Board.Player2Field.Remove(defenderCard);
         }
-        // TODO: Validate cards on board
-        // TODO: Attack logic
-        // TODO: 
-        return new Card();
+        else
+        {
+            Match.Board.Player1Field.Remove(defenderCard);
+        }
+    }
+}
+
+    public Player AttackPlayer(int playerId, int cardId)
+    {
+        CheckGameStatus();
+        CheckTurn(playerId);
+
+        var player = GetPlayer(playerId);
+        var enemy = GetEnemy(playerId);
+        var card = new Card();
+
+        if (Match.Player1.Id == playerId)
+        {
+            card = Match.Board.Player1Field.FirstOrDefault(x => x.Id == cardId);
+        }
+        else if (Match.Player2.Id == playerId)
+        {
+            card = Match.Board.Player2Field.FirstOrDefault(x => x.Id == cardId);
+        }
+
+        if (card != null && card.Attack > 0)
+        {
+            enemy.Health -= card.Attack;
+            if (enemy.Health <= 0)
+            {
+                enemy.Health = 0;
+            }
+        }
+
+        CheckHealth();
+        return enemy;
     }
 
-    public void AttackLogic(Card attackerCard, Card defenderCard)
+    public void CheckHealth()
     {
-        // TODO: Different logics
+        if (Match.Player1.Health <= 0)
+        {
+            EndGame(Match.Player2);
+        }
+        else if (Match.Player2.Health <= 0)
+        {
+            EndGame(Match.Player1);
+        }
+    }
 
-        // var p1Attack = attackerCard.Attack;
-        // var p1Health = attackerCard.Health;
-        //
-        // var p2Attack = defenderCard.Attack;
-        // var p2Health = defenderCard.Health;
-        //
-        // p1Health -= p2Attack;
-        // p2Health -= p1Attack;
-        //
-        // if (p1Health <= 0)
-        // {
-        //     return 
-        // }
-        
-        
+    public void CheckGameStatus()
+    {
+        if(Match.Status == "Game Over")
+        {
+            throw new InvalidOperationException("Game Over");
+        }
+    }
+
+    private Player GetPlayer(int playerId)
+    {
+        return Match.Player1.Id == playerId ? Match.Player1 : Match.Player2;
+    }
+    
+    private Player GetEnemy(int playerId)
+    {
+        return Match.Player1.Id == playerId ? Match.Player2 : Match.Player1;
+    }
+
+    public void EndGame(Player winner)
+    {
+        Console.WriteLine("Game Over. Winner, winner, chicken dinner! " + winner.Name + " wins!");
+        Match.Status = "Game Over";
+        Match.WinnerId = winner.Id;
+        Match.Winner = winner;
     }
 }

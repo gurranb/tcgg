@@ -13,6 +13,7 @@ public class Board
     public Player Player2 { get; set; }
     public List<Card> Player2Field { get; set; } = new List<Card>();
     public int? Player2Id { get; set; }
-    public int Turns { get; set; }
+    public int CurrentPlayerId { get; set; }
+    public int Turns { get; set; } // odd vs evens
 
 }

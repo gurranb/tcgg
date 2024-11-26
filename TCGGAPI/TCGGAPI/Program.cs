@@ -3,7 +3,6 @@ using TCGGAPI;
 using TCGGAPI.Data;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
@@ -26,8 +25,17 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 
-app.MapGet("/game/{id}", (GameManager gm) =>
+app.MapGet("/game", (GameManager gm, int coinToss) =>
 {
+    return gm.StartMatch(coinToss);
+});
+
+app.MapGet("/reset", (GameManager gm, int coinToss) =>
+{
+    gm.RestartMatch(coinToss);
+});
+
+app.MapGet("/getMatch", (GameManager gm) => {
     return gm.Match;
 });
 
@@ -43,10 +51,19 @@ app.MapPost("/playCard", (GameManager gm, int playerId, int cardId) =>
 
 app.MapPost("/attackCard", (GameManager gm, int attackCardId, int defenseCardId, int playerId) =>
 {
-    return gm.AttackCard(attackCardId, defenseCardId, playerId);
+    gm.AttackCard(attackCardId, defenseCardId, playerId);
 });
 
 // TODO: WIN OR LOSE condition
+app.MapPost("/attackPlayer", (GameManager gm, int playerId, int cardId) =>
+{
+    return gm.AttackPlayer(playerId, cardId);
+});
+
+app.MapPost("/endTurn", (GameManager gm, int playerId) =>
+{
+   gm.EndTurn(playerId); 
+});
 
 app.Run();
 

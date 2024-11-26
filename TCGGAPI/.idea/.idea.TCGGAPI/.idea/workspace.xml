@@ -10,6 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="698a92e0-11d4-4730-bcee-ddaf3154db46" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/config/applicationhost.config" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/config/applicationhost.config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/Match.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/Match.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +53,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    ".NET Launch Settings Profile.TCGGAPI: IIS Express.executor": "Debug",
+    ".NET Launch Settings Profile.TCGGAPI: IIS Express.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.codeium.enabled": "true",
@@ -123,6 +127,8 @@
       <workItem from="1732277062611" duration="3991000" />
       <workItem from="1732281252808" duration="2543000" />
       <workItem from="1732536083951" duration="10331000" />
+      <workItem from="1732610052611" duration="13000" />
+      <workItem from="1732610077164" duration="2435000" />
     </task>
     <servers />
   </component>
