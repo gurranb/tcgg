@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
      MY_PATH: TCGGAPI/TCGGAPI.sln
-     MY_TEST: TCGGAPI/TCGGAPI.Tests
+     MY_TEST: TCGGAPI/TCGGAPI.Tests/TCGGAPI.Tests.csproj
       
     steps:
       - name: Checkout code
