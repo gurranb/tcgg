@@ -1,6 +1,9 @@
 using System.Reflection;
+using Moq;
 using TCGGAPI.Models;
 using TCGGAPI.Services;
+using Match = TCGGAPI.Models.Match;
+
 
 namespace TCGGAPI.Tests;
 
@@ -62,14 +65,41 @@ public class CardTests
         _gameManager.StartMatch(1);
         var match = _matchService.GetMatch();
         var playerId = match.Player1.Id;
-
-        var drawnCard = _gameManager.DrawCard(playerId);
+    
+        var drawnCard = _matchService.DrawCard(playerId);
         
         var card = _cardService.GetCard(playerId, match);
         
         Assert.Equal(drawnCard.Name, card.Name);
         Assert.Equal(drawnCard.Id, card.Id);
     }
+
+    // [Fact]
+    // public void DrawCard_ShouldThrowException_WhenCardDoesNotExist()
+    // {
+    //     // Arrange
+    //     var mockGameManager = new Mock<IGameManager>();
+    //     var mockMatchService = new Mock<IMatchService>();
+    //     var mockCardService = new Mock<ICardService>();
+    //     
+    //     var playerId = 1;
+    //     var card = new CardDefintion();
+    //     var match = new Match();
+    //
+    //     mockGameManager.Setup(gm => gm.StartMatch(It.IsAny<int>()));
+    //     mockMatchService.Setup(ms => ms.GetMatch()).Returns(match);
+    //     mockGameManager.Setup(gm => gm.DrawCard(playerId)).Returns(card);
+    //     mockCardService.Setup(cs => cs.GetCard(playerId, match)).Returns(card);
+    //     
+    //     // Act
+    //     mockGameManager.Object.StartMatch(1);
+    //     var drawnCard = mockGameManager.Object.DrawCard(playerId);
+    //     var retrievedCard = mockCardService.Object.GetCard(playerId, match);
+    //     
+    //     // Assert
+    //     Assert.Equal(drawnCard.Name, retrievedCard.Name);
+    //     Assert.Equal(drawnCard.Id, retrievedCard.Id);
+    // }
 
     [Fact]
     public void AttackCard_ShouldUpdateCardHealth()

@@ -4,7 +4,7 @@ using TCGGAPI.Services;
 
 namespace TCGGAPI;
 
-public class GameManager
+public class GameManager : IGameManager
 {
     private readonly IMatchService _matchService;
 
@@ -30,27 +30,46 @@ public class GameManager
     
     public void EndTurn(int playerId)
     {
+        _matchService.EnsureValidTurn(playerId);
         _matchService.EndTurn(playerId);
     }
 
     public CardDefintion DrawCard(int playerId)
     {
+        _matchService.EnsureValidTurn(playerId);
         return _matchService.DrawCard(playerId);
     }
 
     public void AttackCard(int attackCardId, int defenseCardId, int playerId)
     {
+        _matchService.EnsureValidTurn(playerId);
         _matchService.AttackCard(attackCardId, defenseCardId, playerId);
     }
 
 
     public Player AttackPlayer(int playerId, int cardId)
     {
+        _matchService.EnsureValidTurn(playerId);
         return _matchService.AttackPlayer(playerId, cardId);
     }
 
     public void PlayCardToBoard(int playerId, int cardId)
     {
+        _matchService.EnsureValidTurn(playerId);
         _matchService.PlayCardToBoard(playerId, cardId);
     }
 }
+
+public interface IGameManager
+{
+    Match GetMatch();
+    void StartMatch(int coinToss);
+    void RestartMatch(int coinToss);
+    void EndTurn(int playerId);
+    CardDefintion DrawCard(int playerId);
+    void AttackCard(int attackCardId, int defenseCardId, int playerId);
+    Player AttackPlayer(int playerId, int cardId);
+    void PlayCardToBoard(int playerId, int cardId);
+
+
+} 
