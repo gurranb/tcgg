@@ -11,4 +11,5 @@ public class Player
     public List<CardDefintion> Hand { get; set; } = new List<CardDefintion>();
     public List<CardDefintion> Graveyard { get; set; } = new List<CardDefintion>();
     public Deck MatchDeck { get; set; } = new Deck();
+
 }

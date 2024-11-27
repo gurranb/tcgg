@@ -74,33 +74,6 @@ public class CardTests
         Assert.Equal(drawnCard.Id, card.Id);
     }
 
-    // [Fact]
-    // public void DrawCard_ShouldThrowException_WhenCardDoesNotExist()
-    // {
-    //     // Arrange
-    //     var mockGameManager = new Mock<IGameManager>();
-    //     var mockMatchService = new Mock<IMatchService>();
-    //     var mockCardService = new Mock<ICardService>();
-    //     
-    //     var playerId = 1;
-    //     var card = new CardDefintion();
-    //     var match = new Match();
-    //
-    //     mockGameManager.Setup(gm => gm.StartMatch(It.IsAny<int>()));
-    //     mockMatchService.Setup(ms => ms.GetMatch()).Returns(match);
-    //     mockGameManager.Setup(gm => gm.DrawCard(playerId)).Returns(card);
-    //     mockCardService.Setup(cs => cs.GetCard(playerId, match)).Returns(card);
-    //     
-    //     // Act
-    //     mockGameManager.Object.StartMatch(1);
-    //     var drawnCard = mockGameManager.Object.DrawCard(playerId);
-    //     var retrievedCard = mockCardService.Object.GetCard(playerId, match);
-    //     
-    //     // Assert
-    //     Assert.Equal(drawnCard.Name, retrievedCard.Name);
-    //     Assert.Equal(drawnCard.Id, retrievedCard.Id);
-    // }
-
     [Fact]
     public void AttackCard_ShouldUpdateCardHealth()
     {
@@ -162,5 +135,28 @@ public class CardTests
         Assert.Empty(_field1);
         Assert.Single(_graveyard1);
         Assert.Equal(card, _graveyard1[0]);
+    }
+
+    [Fact]
+    public void DisplayHand_ShouldReturnHand()
+    {
+        // Arrange
+        _gameManager.StartMatch(1);
+        var match = _matchService.GetMatch();
+        
+        var card = new CardDefintion { Id = 1, Attack = 1, Health = 0, Name = "Human" };
+        var card2 = new CardDefintion { Id = 1, Attack = 3, Health = 2, Name = "Elf" };
+
+        match.Player1.Hand.Add(card);
+        match.Player2.Hand.Add(card2);
+        
+        // Act
+        var actual = _matchService.GetPlayerHand(1);
+        var actualp2 = _matchService.GetPlayerHand(2);
+        
+        // Assert
+        Assert.Equal(card.Name, actual[0].Name);
+        Assert.Equal(card2.Name, actualp2[0].Name);
+        
     }
 }

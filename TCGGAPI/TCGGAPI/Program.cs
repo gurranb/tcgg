@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TCGGAPI;
 using TCGGAPI.Data;
+using TCGGAPI.DTO;
 using TCGGAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,9 +43,43 @@ app.MapGet("/getMatch", (GameManager gm) => {
     return gm.GetMatch();
 });
 
+
+app.MapGet("/getBoard", (GameManager gm) =>
+{
+    var board = gm.GetBoard();
+
+    var player1Dto = new PlayerDto
+    {
+        Name = board.Player1.Name,
+        MatchDeckAmount = board.Player1.MatchDeck.Cards.Count
+    };
+
+    var player2Dto = new PlayerDto
+    {
+        Name = board.Player2.Name,
+        MatchDeckAmount = board.Player2.MatchDeck.Cards.Count
+    };
+    
+    var boardDto = new BoardDto
+    {
+        Player1 = player1Dto,
+        Player2 = player2Dto,
+        Player1Field = board.Player1Field,
+        Player2Field = board.Player2Field,
+        Turns = board.Turns
+    };
+    
+    return boardDto;
+});
+
 app.MapGet("/draw", (GameManager gm, int PlayerId) =>
 {
     return gm.DrawCard(PlayerId);
+});
+
+app.MapGet("/getHand", (GameManager gm, int PlayerId) =>
+{
+    return gm.GetHand(PlayerId);
 });
 
 app.MapPost("/playCard", (GameManager gm, int playerId, int cardId) =>

@@ -17,6 +17,11 @@ public class GameManager : IGameManager
     {
         return _matchService.GetMatch();
     }
+
+    public Board GetBoard()
+    {
+        return _matchService.GetBoard();
+    }
     
     public void StartMatch(int coinToss)
     {
@@ -39,6 +44,8 @@ public class GameManager : IGameManager
         _matchService.EnsureValidTurn(playerId);
         return _matchService.DrawCard(playerId);
     }
+    
+    public List<CardDefintion> GetHand(int playerId) => _matchService.GetPlayerHand(playerId);
 
     public void AttackCard(int attackCardId, int defenseCardId, int playerId)
     {
@@ -70,6 +77,6 @@ public interface IGameManager
     void AttackCard(int attackCardId, int defenseCardId, int playerId);
     Player AttackPlayer(int playerId, int cardId);
     void PlayCardToBoard(int playerId, int cardId);
-
+    List<CardDefintion> GetHand(int playerId);
 
 } 
