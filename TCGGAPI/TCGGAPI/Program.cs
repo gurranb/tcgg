@@ -13,6 +13,7 @@ builder.Services.AddDbContext<TCGGDBContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<ICardService, CardService>();
+builder.Services.AddSingleton<IMatchService, MatchService>();
 builder.Services.AddSingleton<GameManager>();
 
 var app = builder.Build();
