@@ -10,12 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="698a92e0-11d4-4730-bcee-ddaf3154db46" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/TCGGAPI/Services/CardService.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/TCGGAPI/Services/MatchService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI.sln" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Data/TCGGDBContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Data/TCGGDBContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/config/applicationhost.config" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/config/applicationhost.config" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Program.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -35,8 +31,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/781ebca67bd71532948352c2c24f8db410449e3c21f7191a17bf21348cd4fed4/SwaggerUIMiddleware.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/be6e1abbf5fe16676fc5dbf3473795ec443ed8e2d215698ae3d4ac81f99298a/EqualityAsserts.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/658ad1fa108317d78bcae889b6e4f9dd5327babb6582972f2dbeabf36dafa5/ServiceProvider.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
@@ -53,25 +48,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.TCGGAPI: IIS Express.executor": "Run",
-    "2632f977-66f0-4f24-9be9-a407d7ad534c.executor": "Debug",
-    "5c1818e9-c671-40e4-bb31-8b4a8ddd6dda.executor": "Debug",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.codeium.enabled": "true",
-    "git-widget-placeholder": "test-setup",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.codeium.AppSettingsConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.TCGGAPI: IIS Express.executor&quot;: &quot;Debug&quot;,
+    &quot;2632f977-66f0-4f24-9be9-a407d7ad534c.executor&quot;: &quot;Debug&quot;,
+    &quot;5c1818e9-c671-40e4-bb31-8b4a8ddd6dda.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.TCGGAPI: IIS Express">
     <configuration name="TCGGAPI: IIS Express" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/TCGGAPI/TCGGAPI.csproj" />
@@ -133,6 +128,9 @@
       <workItem from="1732536083951" duration="10331000" />
       <workItem from="1732610052611" duration="13000" />
       <workItem from="1732610077164" duration="21236000" />
+      <workItem from="1732708668658" duration="51000" />
+      <workItem from="1732708729571" duration="14000" />
+      <workItem from="1732708760247" duration="253000" />
     </task>
     <servers />
   </component>
