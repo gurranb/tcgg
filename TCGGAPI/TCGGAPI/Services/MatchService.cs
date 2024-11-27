@@ -7,6 +7,7 @@ public class MatchService: IMatchService
     private readonly ICardService _cardService = new CardService();
     private readonly Random _random = new Random();
     private Match _match;
+    private Board _board;
     private Player P1;
     private Player P2;
 
@@ -19,6 +20,16 @@ public class MatchService: IMatchService
     public Match GetMatch()
     {
         return _match;
+    }
+
+    public Board GetBoard()
+    {
+        return _board;
+    }
+
+    public List<CardDefintion> GetPlayerHand(int playerId)
+    {
+        return GetPlayer(playerId).Hand;
     }
 
     public Match StartMatch(int coinToss)
@@ -34,6 +45,8 @@ public class MatchService: IMatchService
             Player1 = P1,
             Player2 = P2
         };
+        
+        _board = _match.Board;
         
         P1.MatchDeck = GenerateDeck();
         P2.MatchDeck = GenerateDeck();
@@ -56,8 +69,9 @@ public class MatchService: IMatchService
        
         return new Deck
         {
-            Cards = Enumerable.Repeat(card, 5).ToList()
+            Cards = Enumerable.Repeat(card, 5).ToList(),
         };
+        
     }
 
     public void EndTurn(int playerId)
@@ -173,4 +187,8 @@ public interface IMatchService
     CardDefintion PlayCardToBoard(int playerId, int cardId);
 
     void EnsureValidTurn(int playerId);
+    
+    List<CardDefintion> GetPlayerHand(int playerId);
+
+    Board GetBoard();
 }

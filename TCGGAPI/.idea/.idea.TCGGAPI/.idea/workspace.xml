@@ -10,9 +10,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="698a92e0-11d4-4730-bcee-ddaf3154db46" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/DTO/BoardDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/TCGGAPI/DTO/PlayerDto.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI.Tests/CardTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI.Tests/CardTests.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/GameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/Models/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Models/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TCGGAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/Services/MatchService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Services/MatchService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,7 +68,7 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "HotReloadSettingsPage",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -131,7 +135,7 @@
       <workItem from="1732610077164" duration="21236000" />
       <workItem from="1732708668658" duration="51000" />
       <workItem from="1732708729571" duration="14000" />
-      <workItem from="1732708760247" duration="3108000" />
+      <workItem from="1732708760247" duration="8997000" />
     </task>
     <servers />
   </component>
