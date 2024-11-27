@@ -62,9 +62,6 @@ public class MatchService: IMatchService
 
     public void EndTurn(int playerId)
     {
-        CheckGameStatus();
-        CheckTurn(playerId);
-        
         _match.Board.CurrentPlayerId = playerId == 1 ? 2 : 1;
         _match.Board.Turns++;
     }
@@ -104,12 +101,15 @@ public class MatchService: IMatchService
         if (_match.Status == "Game Over")
             throw new InvalidOperationException("Game Over.");
     }
-    
-    public CardDefintion DrawCard(int playerId)
+
+    public void EnsureValidTurn(int playerId)
     {
         CheckGameStatus();
         CheckTurn(playerId);
-        
+    }
+    
+    public CardDefintion DrawCard(int playerId)
+    {
         var card = _cardService.GetCard(playerId, _match);
         var hand = GetPlayer(playerId).Hand;
         
@@ -119,8 +119,6 @@ public class MatchService: IMatchService
     
     public CardDefintion PlayCardToBoard(int playerId, int cardId)
     {
-        CheckGameStatus();
-        CheckTurn(playerId);
 
         var player = GetPlayer(playerId);
         var card = player.Hand.FirstOrDefault(c => c.Id == cardId) 
@@ -136,16 +134,11 @@ public class MatchService: IMatchService
     
     public void AttackCard(int attackCardId, int defenseCardId, int playerId)
     {
-        CheckGameStatus();
-        CheckTurn(playerId);
-        
         _cardService.AttackCard(attackCardId, defenseCardId, playerId, _match);
     }
     
     public Player AttackPlayer(int playerId, int cardId)
     {
-        CheckGameStatus();
-        CheckTurn(playerId);
 
         var enemy = _cardService.AttackPlayer(playerId, cardId, _match);
         
@@ -179,4 +172,5 @@ public interface IMatchService
     
     CardDefintion PlayCardToBoard(int playerId, int cardId);
 
+    void EnsureValidTurn(int playerId);
 }
