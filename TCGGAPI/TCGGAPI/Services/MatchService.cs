@@ -1,3 +1,4 @@
+using TCGGAPI.DTO;
 using TCGGAPI.Models;
 
 namespace TCGGAPI.Services;
@@ -8,6 +9,7 @@ public class MatchService: IMatchService
     private readonly Random _random = new Random();
     private Match _match;
     private Board _board;
+    private Deck _deck;
     private Player P1;
     private Player P2;
 
@@ -66,12 +68,32 @@ public class MatchService: IMatchService
             Rarity = 0,
             Name = "Human"
         };
-       
-        return new Deck
+
+        var card2 = new CardDefintion
         {
-            Cards = Enumerable.Repeat(card, 5).ToList(),
+            Id = 2,
+            Attack = 3,
+            Health = 2,
+            Rarity = 0,
+            Name = "Knight"
         };
-        
+
+        var card3 = new CardDefintion
+        {
+            Id = 3,
+            Attack = 2,
+            Health = 3,
+            Rarity = Rarity.Rare,
+            Name = "Archer"
+        };
+
+        var cards = Enumerable.Repeat(card, 5)
+            .Concat(Enumerable.Repeat(card2, 3))
+            .Concat(Enumerable.Repeat(card3, 2))
+            .ToList();
+
+        return new Deck { Cards = cards };
+
     }
 
     public void EndTurn(int playerId)
@@ -128,6 +150,28 @@ public class MatchService: IMatchService
         var hand = GetPlayer(playerId).Hand;
         
         hand.Add(card);
+        return card;
+    }
+
+    private void InitializeDeck()
+    {
+        _deck = GenerateDeck();
+    }
+
+    public CardDefintion DrawRandomCard(int playerId)
+    {
+        InitializeDeck();
+
+        var card = _cardService.GetRandomCard(playerId, _match);
+        var hand = GetPlayer(playerId).Hand;
+        
+        if (_deck == null || _deck.Cards.Count == 0)
+        {
+            throw new InvalidOperationException("Deck is not initialized or empty.");
+        }
+        
+        hand.Add(card);
+
         return card;
     }
     
@@ -191,4 +235,6 @@ public interface IMatchService
     List<CardDefintion> GetPlayerHand(int playerId);
 
     Board GetBoard();
+    
+    CardDefintion DrawRandomCard(int playerId);
 }
