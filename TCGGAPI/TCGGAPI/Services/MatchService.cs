@@ -153,22 +153,11 @@ public class MatchService: IMatchService
         return card;
     }
 
-    private void InitializeDeck()
-    {
-        _deck = GenerateDeck();
-    }
-
     public CardDefintion DrawRandomCard(int playerId)
     {
-        InitializeDeck();
 
         var card = _cardService.GetRandomCard(playerId, _match);
         var hand = GetPlayer(playerId).Hand;
-        
-        if (_deck == null || _deck.Cards.Count == 0)
-        {
-            throw new InvalidOperationException("Deck is not initialized or empty.");
-        }
         
         hand.Add(card);
 

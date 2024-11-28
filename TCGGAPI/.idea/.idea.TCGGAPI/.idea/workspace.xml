@@ -11,9 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="698a92e0-11d4-4730-bcee-ddaf3154db46" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Services/CardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Services/CardService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/TCGGAPI/Services/MatchService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Services/MatchService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,6 +30,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/2c8e7ca976f350cba9836d5565dac56b11e0b56656fa786460eb1395857a6fa/ThrowHelper.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/658ad1fa108317d78bcae889b6e4f9dd5327babb6582972f2dbeabf36dafa5/ServiceProvider.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
@@ -59,7 +57,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "XThreadsFramesViewSplitterKey": "0.31470588",
     "com.codeium.enabled": "true",
-    "git-widget-placeholder": "feat/BoardService",
+    "git-widget-placeholder": "feat/drawRndCard",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
