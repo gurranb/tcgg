@@ -12,6 +12,15 @@ public class CardService : ICardService
         return card;
     }
 
+    public CardDefintion GetRandomCard(int playerId, Match match)
+    {
+        var deck = GetPlayerDeck(playerId, match);
+        var random = new Random();
+        var card = deck.Cards[random.Next(deck.Cards.Count)];
+        deck.Cards.Remove(card);
+        return card;
+    }
+
     public void AttackCard(int attackCardId, int defenseCardId, int playerId, Match match)
     {
         var (attackerField, defenderField) = GetField(playerId, match);
@@ -91,4 +100,5 @@ public interface ICardService
     CardDefintion GetCard(int playerId, Match match);
     void AttackCard(int attackCardId, int defenseCardId, int playerId, Match match);
     Player AttackPlayer(int playerId, int cardId, Match match);
+    CardDefintion GetRandomCard(int playerId, Match match);
 }
