@@ -43,7 +43,6 @@ app.MapGet("/getMatch", (GameManager gm) => {
     return gm.GetMatch();
 });
 
-
 app.MapGet("/getBoard", (GameManager gm) =>
 {
     var board = gm.GetBoard();
@@ -75,6 +74,11 @@ app.MapGet("/getBoard", (GameManager gm) =>
 app.MapGet("/draw", (GameManager gm, int PlayerId) =>
 {
     return gm.DrawCard(PlayerId);
+});
+
+app.MapGet("/drawRndCard", (GameManager gm, int PlayerId) =>
+{
+    return gm.DrawRandomCard(PlayerId);
 });
 
 app.MapGet("/getHand", (GameManager gm, int PlayerId) =>

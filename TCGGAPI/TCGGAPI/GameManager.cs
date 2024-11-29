@@ -44,6 +44,12 @@ public class GameManager : IGameManager
         _matchService.EnsureValidTurn(playerId);
         return _matchService.DrawCard(playerId);
     }
+
+    public CardDefintion DrawRandomCard(int playerId)
+    {
+        _matchService.EnsureValidTurn(playerId);
+        return _matchService.DrawRandomCard(playerId);
+    }
     
     public List<CardDefintion> GetHand(int playerId) => _matchService.GetPlayerHand(playerId);
 
@@ -78,5 +84,7 @@ public interface IGameManager
     Player AttackPlayer(int playerId, int cardId);
     void PlayCardToBoard(int playerId, int cardId);
     List<CardDefintion> GetHand(int playerId);
+    
+    CardDefintion DrawRandomCard(int playerId);
 
 } 
