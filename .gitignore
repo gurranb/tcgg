@@ -412,6 +412,9 @@ FodyWeavers.xsd
 .idea/**/dictionaries
 .idea/**/shelf
 
+# Ignore IntelliJ IDEA files
+.idea/**/workspace.xml
+
 # AWS User-specific
 .idea/**/aws.xml
 
