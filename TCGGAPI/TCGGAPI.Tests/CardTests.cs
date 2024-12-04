@@ -16,10 +16,10 @@ public class CardTests
     private Deck _deck;
     private Player _player1;
     private Player _player2;
-    private List<CardDefintion> _field1;
-    private List<CardDefintion> _field2;
-    private List<CardDefintion> _graveyard1;
-    private List<CardDefintion> _graveyard2;
+    private List<CardDefinition> _field1;
+    private List<CardDefinition> _field2;
+    private List<CardDefinition> _graveyard1;
+    private List<CardDefinition> _graveyard2;
 
     
 
@@ -35,16 +35,16 @@ public class CardTests
         _player2 = new Player {Id = 2, Name = "Player 2", Health = 10, Graveyard = _graveyard2, MatchDeck = _deck};
         
         _deck = new Deck();
-        _deck.Cards = new List<CardDefintion>
+        _deck.Cards = new List<CardDefinition>
         {
-            new CardDefintion { Id = 1, Attack = 1, Health = 1, Rarity = 0, Name = "Human" },
-            new CardDefintion { Id = 2, Attack = 2, Health = 2, Rarity = 0, Name = "Beast" },
+            new CardDefinition { Id = 1, Attack = 1, Health = 1, Rarity = 0, Name = "Human" },
+            new CardDefinition { Id = 2, Attack = 2, Health = 2, Rarity = 0, Name = "Beast" },
         };
 
-        _field1 = new List<CardDefintion>();
-        _field2 = new List<CardDefintion>();
-        _graveyard1 = new List<CardDefintion>();
-        _graveyard2 = new List<CardDefintion>();
+        _field1 = new List<CardDefinition>();
+        _field2 = new List<CardDefinition>();
+        _graveyard1 = new List<CardDefinition>();
+        _graveyard2 = new List<CardDefinition>();
 
         _match = new Match
         {
@@ -79,8 +79,8 @@ public class CardTests
     {
         // Arrange
         
-        var attackCard = new CardDefintion { Id = 1, Attack = 5, Health = 10 };
-        var defenseCard = new CardDefintion { Id = 2, Attack = 2, Health = 11 };
+        var attackCard = new CardDefinition { Id = 1, Attack = 5, Health = 10 };
+        var defenseCard = new CardDefinition { Id = 2, Attack = 2, Health = 11 };
         
         _field1.Add(attackCard);
         _field2.Add(defenseCard);
@@ -98,7 +98,7 @@ public class CardTests
     {
         // Arrange 
         
-        var card = new CardDefintion {Id = 1, Health = 10, Attack = 5};
+        var card = new CardDefinition {Id = 1, Health = 10, Attack = 5};
         _field1.Add(card);
         
         // Act
@@ -113,7 +113,7 @@ public class CardTests
     {
         // Arrange 
 
-        var card = new CardDefintion { Id = 1, Health = 1, Attack = 11 };
+        var card = new CardDefinition { Id = 1, Health = 1, Attack = 11 };
         _field1.Add(card);
 
         // Act
@@ -126,7 +126,7 @@ public class CardTests
     [Fact]
     public void CardDeath_ShouldRemoveCardFromFieldAndMoveToGraveyard()
     {
-        var card = new CardDefintion {Id = 1, Attack = 1, Health = 0, Name = "Human"};
+        var card = new CardDefinition {Id = 1, Attack = 1, Health = 0, Name = "Human"};
         _field1.Add(card);
         
         var method = typeof(CardService).GetMethod("CardDeath", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -144,8 +144,8 @@ public class CardTests
         _gameManager.StartMatch(1);
         var match = _matchService.GetMatch();
         
-        var card = new CardDefintion { Id = 1, Attack = 1, Health = 0, Name = "Human" };
-        var card2 = new CardDefintion { Id = 1, Attack = 3, Health = 2, Name = "Elf" };
+        var card = new CardDefinition { Id = 1, Attack = 1, Health = 0, Name = "Human" };
+        var card2 = new CardDefinition { Id = 1, Attack = 3, Health = 2, Name = "Elf" };
 
         match.Player1.Hand.Add(card);
         match.Player2.Hand.Add(card2);

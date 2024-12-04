@@ -1,6 +1,6 @@
 namespace TCGGAPI.Models;
 
-public class CardDefintion : Card
+public class CardDefinition : Card
 {
     public Rarity Rarity { get; set; }
 }

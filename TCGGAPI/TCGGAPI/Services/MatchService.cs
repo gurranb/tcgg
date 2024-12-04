@@ -29,7 +29,7 @@ public class MatchService: IMatchService
         return _board;
     }
 
-    public List<CardDefintion> GetPlayerHand(int playerId)
+    public List<CardDefinition> GetPlayerHand(int playerId)
     {
         return GetPlayer(playerId).Hand;
     }
@@ -60,11 +60,11 @@ public class MatchService: IMatchService
     
     private Deck GenerateDeck()
     {
-        var cards = new List<CardDefintion>();
+        var cards = new List<CardDefinition>();
 
         for (int i = 0; i <= 5; i++)
         {
-            cards.Add(new CardDefintion
+            cards.Add(new CardDefinition
             {
                 Id = _random.Next(1, 1000),
                 Attack = 1,
@@ -73,7 +73,7 @@ public class MatchService: IMatchService
                 Name = "Human"
             });
       
-            cards.Add(new CardDefintion
+            cards.Add(new CardDefinition
             {
                 Id =  _random.Next(1, 1000),
                 Attack = 3,
@@ -85,7 +85,7 @@ public class MatchService: IMatchService
 
         for (int i = 0; i <= 2; i++)
         {
-            cards.Add(new CardDefintion
+            cards.Add(new CardDefinition
             {
                 Id = _random.Next(1, 1000),
                 Attack = 2,
@@ -146,7 +146,7 @@ public class MatchService: IMatchService
         CheckTurn(playerId);
     }
     
-    public CardDefintion DrawCard(int playerId)
+    public CardDefinition DrawCard(int playerId)
     {
         var card = _cardService.GetCard(playerId, _match);
         var hand = GetPlayer(playerId).Hand;
@@ -155,7 +155,7 @@ public class MatchService: IMatchService
         return card;
     }
 
-    public CardDefintion DrawRandomCard(int playerId)
+    public CardDefinition DrawRandomCard(int playerId)
     {
 
         var card = _cardService.GetRandomCard(playerId, _match);
@@ -166,7 +166,7 @@ public class MatchService: IMatchService
         return card;
     }
     
-    public CardDefintion PlayCardToBoard(int playerId, int cardId)
+    public CardDefinition PlayCardToBoard(int playerId, int cardId)
     {
 
         var player = GetPlayer(playerId);
@@ -213,19 +213,19 @@ public interface IMatchService
     
     void RestartMatch(int coinToss);
 
-    CardDefintion DrawCard(int playerId);
+    CardDefinition DrawCard(int playerId);
     
     void AttackCard(int attackCardId, int defenseCardId, int playerId);
     
     Player AttackPlayer(int playerId, int cardId);
     
-    CardDefintion PlayCardToBoard(int playerId, int cardId);
+    CardDefinition PlayCardToBoard(int playerId, int cardId);
 
     void EnsureValidTurn(int playerId);
     
-    List<CardDefintion> GetPlayerHand(int playerId);
+    List<CardDefinition> GetPlayerHand(int playerId);
 
     Board GetBoard();
     
-    CardDefintion DrawRandomCard(int playerId);
+    CardDefinition DrawRandomCard(int playerId);
 }
