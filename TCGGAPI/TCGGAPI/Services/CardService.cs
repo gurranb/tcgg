@@ -4,7 +4,7 @@ namespace TCGGAPI.Services;
 
 public class CardService : ICardService
 {
-    public CardDefintion GetCard(int playerId, Match match)
+    public CardDefinition GetCard(int playerId, Match match)
     {
         var deck = GetPlayerDeck(playerId, match);
         var card = deck.Cards.FirstOrDefault();
@@ -12,7 +12,7 @@ public class CardService : ICardService
         return card;
     }
 
-    public CardDefintion GetRandomCard(int playerId, Match match)
+    public CardDefinition GetRandomCard(int playerId, Match match)
     {
         var deck = GetPlayerDeck(playerId, match);
         var random = new Random();
@@ -55,18 +55,18 @@ public class CardService : ICardService
     private Player GetEnemy(int playerId, Match match) =>
         playerId == match.Player1.Id ? match.Player2 : match.Player1;
     
-    private (List<CardDefintion> attackerField, List<CardDefintion> defenderField) GetField(int playerId, Match match)
+    private (List<CardDefinition> attackerField, List<CardDefinition> defenderField) GetField(int playerId, Match match)
     {
         return playerId == match.Player1.Id ? (match.Board.Player1Field, match.Board.Player2Field) : (match.Board.Player2Field, match.Board.Player1Field);
     }
 
-    private (List<CardDefintion> attackerGraveyard, List<CardDefintion> defenderGraveyard) GetGraveyard(int playerId,
+    private (List<CardDefinition> attackerGraveyard, List<CardDefinition> defenderGraveyard) GetGraveyard(int playerId,
         Match match)
     {
         return playerId == match.Player1.Id ? (match.Player1.Graveyard, match.Player2.Graveyard) : (match.Player2.Graveyard, match.Player1.Graveyard);
     }
     
-    private CardDefintion GetCardFromField(int cardId, List<CardDefintion> field)
+    private CardDefinition GetCardFromField(int cardId, List<CardDefinition> field)
     {
         var card = field.FirstOrDefault(x => x.Id == cardId);
         if (card == null)
@@ -74,7 +74,7 @@ public class CardService : ICardService
         return card;
     }
 
-    private void PerformAttack(CardDefintion attackerCard, CardDefintion defenderCard)
+    private void PerformAttack(CardDefinition attackerCard, CardDefinition defenderCard)
     {
         attackerCard.Health -= defenderCard.Attack;
         defenderCard.Health -= attackerCard.Attack;
@@ -85,7 +85,7 @@ public class CardService : ICardService
         return playerId == match.Player1.Id ? match.Player1.MatchDeck : match.Player2.MatchDeck;
     }
 
-    private void CardDeath(CardDefintion card, List<CardDefintion> field, List<CardDefintion> graveyard)
+    private void CardDeath(CardDefinition card, List<CardDefinition> field, List<CardDefinition> graveyard)
     {
         if (card.Health <= 0)
         {
@@ -97,8 +97,8 @@ public class CardService : ICardService
 
 public interface ICardService
 {
-    CardDefintion GetCard(int playerId, Match match);
+    CardDefinition GetCard(int playerId, Match match);
     void AttackCard(int attackCardId, int defenseCardId, int playerId, Match match);
     Player AttackPlayer(int playerId, int cardId, Match match);
-    CardDefintion GetRandomCard(int playerId, Match match);
+    CardDefinition GetRandomCard(int playerId, Match match);
 }

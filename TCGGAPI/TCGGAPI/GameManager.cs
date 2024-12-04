@@ -39,19 +39,19 @@ public class GameManager : IGameManager
         _matchService.EndTurn(playerId);
     }
 
-    public CardDefintion DrawCard(int playerId)
+    public CardDefinition DrawCard(int playerId)
     {
         _matchService.EnsureValidTurn(playerId);
         return _matchService.DrawCard(playerId);
     }
 
-    public CardDefintion DrawRandomCard(int playerId)
+    public CardDefinition DrawRandomCard(int playerId)
     {
         _matchService.EnsureValidTurn(playerId);
         return _matchService.DrawRandomCard(playerId);
     }
     
-    public List<CardDefintion> GetHand(int playerId) => _matchService.GetPlayerHand(playerId);
+    public List<CardDefinition> GetHand(int playerId) => _matchService.GetPlayerHand(playerId);
 
     public void AttackCard(int attackCardId, int defenseCardId, int playerId)
     {
@@ -79,12 +79,12 @@ public interface IGameManager
     void StartMatch(int coinToss);
     void RestartMatch(int coinToss);
     void EndTurn(int playerId);
-    CardDefintion DrawCard(int playerId);
+    CardDefinition DrawCard(int playerId);
     void AttackCard(int attackCardId, int defenseCardId, int playerId);
     Player AttackPlayer(int playerId, int cardId);
     void PlayCardToBoard(int playerId, int cardId);
-    List<CardDefintion> GetHand(int playerId);
+    List<CardDefinition> GetHand(int playerId);
     
-    CardDefintion DrawRandomCard(int playerId);
+    CardDefinition DrawRandomCard(int playerId);
 
 } 
