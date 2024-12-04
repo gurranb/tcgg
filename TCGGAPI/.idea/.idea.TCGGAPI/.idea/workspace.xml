@@ -11,7 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="698a92e0-11d4-4730-bcee-ddaf3154db46" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.TCGGAPI/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TCGGAPI/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/TCGGAPI/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/config/applicationhost.config" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/config/applicationhost.config" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,6 +135,7 @@
       <workItem from="1732875058605" duration="1278000" />
       <workItem from="1732876754583" duration="728000" />
       <workItem from="1732886306590" duration="1843000" />
+      <workItem from="1733215661862" duration="1036000" />
     </task>
     <servers />
   </component>

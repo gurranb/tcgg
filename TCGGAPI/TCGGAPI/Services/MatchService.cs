@@ -60,40 +60,42 @@ public class MatchService: IMatchService
     
     private Deck GenerateDeck()
     {
-        var card = new CardDefintion
-        {
-            Id = 1,
-            Attack = 1,
-            Health = 1,
-            Rarity = 0,
-            Name = "Human"
-        };
+        var cards = new List<CardDefintion>();
 
-        var card2 = new CardDefintion
+        for (int i = 0; i <= 5; i++)
         {
-            Id = 2,
-            Attack = 3,
-            Health = 2,
-            Rarity = 0,
-            Name = "Knight"
-        };
+            cards.Add(new CardDefintion
+            {
+                Id = _random.Next(1, 1000),
+                Attack = 1,
+                Health = 1,
+                Rarity = 0,
+                Name = "Human"
+            });
+      
+            cards.Add(new CardDefintion
+            {
+                Id =  _random.Next(1, 1000),
+                Attack = 3,
+                Health = 2,
+                Rarity = 0,
+                Name = "Knight"
+            });
+        }
 
-        var card3 = new CardDefintion
+        for (int i = 0; i <= 2; i++)
         {
-            Id = 3,
-            Attack = 2,
-            Health = 3,
-            Rarity = Rarity.Rare,
-            Name = "Archer"
-        };
-
-        var cards = Enumerable.Repeat(card, 5)
-            .Concat(Enumerable.Repeat(card2, 3))
-            .Concat(Enumerable.Repeat(card3, 2))
-            .ToList();
+            cards.Add(new CardDefintion
+            {
+                Id = _random.Next(1, 1000),
+                Attack = 2,
+                Health = 3,
+                Rarity = Rarity.Rare,
+                Name = "Archer"
+            });
+        }
 
         return new Deck { Cards = cards };
-
     }
 
     public void EndTurn(int playerId)
