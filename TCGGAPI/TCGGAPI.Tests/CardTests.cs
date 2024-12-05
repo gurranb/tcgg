@@ -69,7 +69,7 @@ public class CardTests
         var drawnCard = _matchService.DrawCard(playerId);
 
         var actual = _matchService.GetPlayerHand(1);
-        var card = actual[0];
+        var card = actual[3];
         
         Assert.Equal(drawnCard.Name, card.Name);
         Assert.Equal(drawnCard.Id, card.Id);
@@ -156,8 +156,8 @@ public class CardTests
         var actualp2 = _matchService.GetPlayerHand(2);
         
         // Assert
-        Assert.Equal(card.Name, actual[0].Name);
-        Assert.Equal(card2.Name, actualp2[0].Name);
+        Assert.Equal(card.Name, actual[3].Name);
+        Assert.Equal(card2.Name, actualp2[3].Name);
         
     }
 }
