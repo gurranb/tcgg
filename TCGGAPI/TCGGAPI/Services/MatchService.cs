@@ -43,7 +43,7 @@ public class MatchService: IMatchService
 
         _match = new Match
         {
-            Board = new Board{ Player1 = P1, Player2 = P2 },
+            Board = new Board{ Player1 = P1, Player2 = P2 , Player1Id = P1.Id, Player2Id = P2.Id},
             Player1 = P1,
             Player2 = P2
         };
@@ -55,8 +55,8 @@ public class MatchService: IMatchService
 
         for (int i = 1; i <= 3; i++)
         {
-            DrawCard(P1.Id);
-            DrawCard(P2.Id);
+            DrawRandomCard(P1.Id);
+            DrawRandomCard(P2.Id);
             
         }
         
