@@ -8,7 +8,7 @@ public class CardService : ICardService
     {
         var deck = GetPlayerDeck(playerId, match);
         var card = deck.Cards.FirstOrDefault();
-        deck.Cards.Remove(card);
+        
         return card;
     }
 
@@ -17,7 +17,7 @@ public class CardService : ICardService
         var deck = GetPlayerDeck(playerId, match);
         var random = new Random();
         var card = deck.Cards[random.Next(deck.Cards.Count)];
-        deck.Cards.Remove(card);
+       
         return card;
     }
 

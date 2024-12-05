@@ -43,7 +43,7 @@ app.UseHttpsRedirection();
 
 app.MapGet("/game", (GameManager gm, int coinToss) =>
 {
-   gm.StartMatch(coinToss);
+   return gm.StartMatch(coinToss);
 });
 
 app.MapGet("/reset", (GameManager gm, int coinToss) =>
@@ -91,6 +91,11 @@ app.MapGet("/draw", (GameManager gm, int PlayerId) =>
 app.MapGet("/drawRndCard", (GameManager gm, int PlayerId) =>
 {
     return gm.DrawRandomCard(PlayerId);
+});
+
+app.MapGet("/drawMultipleCards", (GameManager gm, int PlayerId, int amount) =>
+{
+    return gm.DrawMultipleCards(PlayerId, amount);
 });
 
 app.MapGet("/getHand", (GameManager gm, int PlayerId) =>

@@ -33,7 +33,7 @@ public class MatchService: IMatchService
     {
         return GetPlayer(playerId).Hand;
     }
-
+    
     public Match StartMatch(int coinToss)
     {
         int coinTossResult = _random.Next(0, 2);
@@ -43,7 +43,7 @@ public class MatchService: IMatchService
 
         _match = new Match
         {
-            Board = new Board{ Player1 = P1, Player2 = P2 },
+            Board = new Board{ Player1 = P1, Player2 = P2 , Player1Id = P1.Id, Player2Id = P2.Id},
             Player1 = P1,
             Player2 = P2
         };
@@ -52,6 +52,13 @@ public class MatchService: IMatchService
         
         P1.MatchDeck = GenerateDeck();
         P2.MatchDeck = GenerateDeck();
+
+        for (int i = 1; i <= 3; i++)
+        {
+            DrawRandomCard(P1.Id);
+            DrawRandomCard(P2.Id);
+            
+        }
         
         _match.Board.CurrentPlayerId = coinToss == coinTossResult ? P1.Id : P2.Id;
 
@@ -148,10 +155,14 @@ public class MatchService: IMatchService
     
     public CardDefinition DrawCard(int playerId)
     {
+        var player = GetPlayer(playerId);
         var card = _cardService.GetCard(playerId, _match);
-        var hand = GetPlayer(playerId).Hand;
+        var hand = player.Hand;
+        var deck = player.MatchDeck;
         
+        deck.Cards.Remove(card);
         hand.Add(card);
+        
         return card;
     }
 
@@ -159,11 +170,32 @@ public class MatchService: IMatchService
     {
 
         var card = _cardService.GetRandomCard(playerId, _match);
-        var hand = GetPlayer(playerId).Hand;
-        
+        var player = GetPlayer(playerId);
+        var hand = player.Hand;
+        var deck = player.MatchDeck;
+
+        deck.Cards.Remove(card);
         hand.Add(card);
 
         return card;
+    }
+    
+    public List<CardDefinition> DrawMultipleCards(int playerId, int amount)
+    {
+        var cards = new List<CardDefinition>();
+        var player = GetPlayer(playerId);
+        if(player == null) throw new InvalidOperationException("Player not found.");
+        var hand = player.Hand;
+        var deck = player.MatchDeck;
+        for (int i = 1; i <= amount; i++)
+        {
+            var card = _cardService.GetRandomCard(playerId, _match);
+            deck.Cards.Remove(card);
+            hand.Add(card);
+            cards.Add(card);
+        }
+
+        return cards;
     }
     
     public CardDefinition PlayCardToBoard(int playerId, int cardId)
@@ -214,6 +246,8 @@ public interface IMatchService
     void RestartMatch(int coinToss);
 
     CardDefinition DrawCard(int playerId);
+
+    List<CardDefinition> DrawMultipleCards(int playerId, int amount);
     
     void AttackCard(int attackCardId, int defenseCardId, int playerId);
     

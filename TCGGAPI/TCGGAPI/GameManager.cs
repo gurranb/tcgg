@@ -23,9 +23,21 @@ public class GameManager : IGameManager
         return _matchService.GetBoard();
     }
     
-    public void StartMatch(int coinToss)
+    private bool IsCoinTossResult(int result)
     {
-        var match = _matchService.StartMatch(coinToss);
+        return result == 1 || result == 0;
+    }
+    
+    public string StartMatch(int coinToss)
+    {
+        var result = IsCoinTossResult(coinToss);
+        if (!result)
+        {
+            return "Invalid coin toss result. Must be 0 or 1.";
+        }
+
+        _matchService.StartMatch(coinToss);
+        return "Match started successfully.";
     }
 
     public void RestartMatch(int coinToss)
@@ -49,6 +61,12 @@ public class GameManager : IGameManager
     {
         _matchService.EnsureValidTurn(playerId);
         return _matchService.DrawRandomCard(playerId);
+    }
+
+    public List<CardDefinition> DrawMultipleCards(int playerId, int amount)
+    {
+        _matchService.EnsureValidTurn(playerId);
+        return _matchService.DrawMultipleCards(playerId, amount);
     }
     
     public List<CardDefinition> GetHand(int playerId) => _matchService.GetPlayerHand(playerId);
@@ -76,10 +94,11 @@ public class GameManager : IGameManager
 public interface IGameManager
 {
     Match GetMatch();
-    void StartMatch(int coinToss);
+    string StartMatch(int coinToss);
     void RestartMatch(int coinToss);
     void EndTurn(int playerId);
     CardDefinition DrawCard(int playerId);
+    List<CardDefinition> DrawMultipleCards(int playerId, int amount);
     void AttackCard(int attackCardId, int defenseCardId, int playerId);
     Player AttackPlayer(int playerId, int cardId);
     void PlayCardToBoard(int playerId, int cardId);
