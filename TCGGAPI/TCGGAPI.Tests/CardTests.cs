@@ -67,8 +67,9 @@ public class CardTests
         var playerId = match.Player1.Id;
     
         var drawnCard = _matchService.DrawCard(playerId);
-        
-        var card = _cardService.GetCard(playerId, match);
+
+        var actual = _matchService.GetPlayerHand(1);
+        var card = actual[0];
         
         Assert.Equal(drawnCard.Name, card.Name);
         Assert.Equal(drawnCard.Id, card.Id);

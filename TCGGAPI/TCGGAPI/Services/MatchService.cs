@@ -33,7 +33,7 @@ public class MatchService: IMatchService
     {
         return GetPlayer(playerId).Hand;
     }
-
+    
     public Match StartMatch(int coinToss)
     {
         int coinTossResult = _random.Next(0, 2);
@@ -52,6 +52,13 @@ public class MatchService: IMatchService
         
         P1.MatchDeck = GenerateDeck();
         P2.MatchDeck = GenerateDeck();
+
+        for (int i = 1; i <= 3; i++)
+        {
+            DrawCard(P1.Id);
+            DrawCard(P2.Id);
+            
+        }
         
         _match.Board.CurrentPlayerId = coinToss == coinTossResult ? P1.Id : P2.Id;
 
@@ -148,10 +155,14 @@ public class MatchService: IMatchService
     
     public CardDefinition DrawCard(int playerId)
     {
+        var player = GetPlayer(playerId);
         var card = _cardService.GetCard(playerId, _match);
-        var hand = GetPlayer(playerId).Hand;
+        var hand = player.Hand;
+        var deck = player.MatchDeck;
         
+        deck.Cards.Remove(card);
         hand.Add(card);
+        
         return card;
     }
 
@@ -159,8 +170,11 @@ public class MatchService: IMatchService
     {
 
         var card = _cardService.GetRandomCard(playerId, _match);
-        var hand = GetPlayer(playerId).Hand;
-        
+        var player = GetPlayer(playerId);
+        var hand = player.Hand;
+        var deck = player.MatchDeck;
+
+        deck.Cards.Remove(card);
         hand.Add(card);
 
         return card;

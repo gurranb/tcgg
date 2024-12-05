@@ -43,7 +43,7 @@ app.UseHttpsRedirection();
 
 app.MapGet("/game", (GameManager gm, int coinToss) =>
 {
-   gm.StartMatch(coinToss);
+   return gm.StartMatch(coinToss);
 });
 
 app.MapGet("/reset", (GameManager gm, int coinToss) =>

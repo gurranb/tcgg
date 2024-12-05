@@ -23,9 +23,21 @@ public class GameManager : IGameManager
         return _matchService.GetBoard();
     }
     
-    public void StartMatch(int coinToss)
+    private bool IsCoinTossResult(int result)
     {
-        var match = _matchService.StartMatch(coinToss);
+        return result == 1 || result == 0;
+    }
+    
+    public string StartMatch(int coinToss)
+    {
+        var result = IsCoinTossResult(coinToss);
+        if (!result)
+        {
+            return "Invalid coin toss result. Must be 0 or 1.";
+        }
+
+        _matchService.StartMatch(coinToss);
+        return "Match started successfully.";
     }
 
     public void RestartMatch(int coinToss)
@@ -76,7 +88,7 @@ public class GameManager : IGameManager
 public interface IGameManager
 {
     Match GetMatch();
-    void StartMatch(int coinToss);
+    string StartMatch(int coinToss);
     void RestartMatch(int coinToss);
     void EndTurn(int playerId);
     CardDefinition DrawCard(int playerId);
