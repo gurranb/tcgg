@@ -93,6 +93,11 @@ app.MapGet("/drawRndCard", (GameManager gm, int PlayerId) =>
     return gm.DrawRandomCard(PlayerId);
 });
 
+app.MapGet("/drawMultipleCards", (GameManager gm, int PlayerId, int amount) =>
+{
+    return gm.DrawMultipleCards(PlayerId, amount);
+});
+
 app.MapGet("/getHand", (GameManager gm, int PlayerId) =>
 {
     return gm.GetHand(PlayerId);

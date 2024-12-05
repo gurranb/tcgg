@@ -180,6 +180,24 @@ public class MatchService: IMatchService
         return card;
     }
     
+    public List<CardDefinition> DrawMultipleCards(int playerId, int amount)
+    {
+        var cards = new List<CardDefinition>();
+        var player = GetPlayer(playerId);
+        if(player == null) throw new InvalidOperationException("Player not found.");
+        var hand = player.Hand;
+        var deck = player.MatchDeck;
+        for (int i = 1; i <= amount; i++)
+        {
+            var card = _cardService.GetRandomCard(playerId, _match);
+            deck.Cards.Remove(card);
+            hand.Add(card);
+            cards.Add(card);
+        }
+
+        return cards;
+    }
+    
     public CardDefinition PlayCardToBoard(int playerId, int cardId)
     {
 
@@ -228,6 +246,8 @@ public interface IMatchService
     void RestartMatch(int coinToss);
 
     CardDefinition DrawCard(int playerId);
+
+    List<CardDefinition> DrawMultipleCards(int playerId, int amount);
     
     void AttackCard(int attackCardId, int defenseCardId, int playerId);
     
