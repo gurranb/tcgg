@@ -116,7 +116,13 @@ public class MatchService: IMatchService
     public void StartTurn(int playerId)
     {
         CheckGameStatus();
-        DrawRandomCard(playerId);
+        var player = GetPlayer(playerId);
+        var card = DrawRandomCard(playerId);
+        if(player.Hand.Count > 7)
+        {
+            player.Hand.Remove(card);
+            player.Graveyard.Add(card);
+        }
         CheckHealth();
     }
     
