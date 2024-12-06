@@ -88,6 +88,11 @@ app.MapGet("/draw", (GameManager gm, int PlayerId) =>
     return gm.DrawCard(PlayerId);
 });
 
+app.MapGet("/startTurn", (GameManager gm, int PlayerId) =>
+{
+    gm.StartTurn(PlayerId);
+});
+
 app.MapGet("/drawRndCard", (GameManager gm, int PlayerId) =>
 {
     return gm.DrawRandomCard(PlayerId);

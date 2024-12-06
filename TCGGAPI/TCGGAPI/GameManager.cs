@@ -22,7 +22,13 @@ public class GameManager : IGameManager
     {
         return _matchService.GetBoard();
     }
-    
+
+    public void StartTurn(int playerId)
+    {
+        _matchService.EnsureValidTurn(playerId);
+        _matchService.StartTurn(playerId);
+    }
+
     private bool IsCoinTossResult(int result)
     {
         return result == 1 || result == 0;
@@ -95,6 +101,7 @@ public interface IGameManager
 {
     Match GetMatch();
     string StartMatch(int coinToss);
+    void StartTurn(int playerId);
     void RestartMatch(int coinToss);
     void EndTurn(int playerId);
     CardDefinition DrawCard(int playerId);
