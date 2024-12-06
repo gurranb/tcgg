@@ -105,6 +105,13 @@ public class MatchService: IMatchService
         return new Deck { Cards = cards };
     }
 
+    public void StartTurn(int playerId)
+    {
+        CheckGameStatus();
+        DrawRandomCard(playerId);
+        CheckHealth();
+    }
+    
     public void EndTurn(int playerId)
     {
         _match.Board.CurrentPlayerId = playerId == 1 ? 2 : 1;
@@ -240,6 +247,8 @@ public interface IMatchService
 {
     Match GetMatch();
     Match StartMatch(int coinToss);
+    
+    void StartTurn(int playerId);
     
     void EndTurn(int playerId);
     
