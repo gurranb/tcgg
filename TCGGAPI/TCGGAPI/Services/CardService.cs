@@ -23,6 +23,7 @@ public class CardService : ICardService
 
     public void AttackCard(int attackCardId, int defenseCardId, int playerId, Match match)
     {
+        
         var (attackerField, defenderField) = GetField(playerId, match);
             
         var (attackerGraveyard, defenderGraveyard) = GetGraveyard(playerId, match);
@@ -30,6 +31,11 @@ public class CardService : ICardService
         var attackerCard = GetCardFromField(attackCardId, attackerField);
         var defenderCard = GetCardFromField(defenseCardId, defenderField);
 
+        if (attackerCard.DeployedTurn == match.Board.Turns)
+        {
+            throw new InvalidOperationException("Attacking card has already been deployed this turn.");
+        }
+        
         PerformAttack(attackerCard, defenderCard);
         CardDeath(attackerCard, attackerField, attackerGraveyard);
         CardDeath(defenderCard, defenderField, defenderGraveyard);
@@ -40,6 +46,11 @@ public class CardService : ICardService
         var attackerField = GetField(playerId, match).attackerField;
         var card = GetCardFromField(cardId, attackerField)
                    ?? throw new InvalidOperationException("Attacking card not found.");
+        
+        if (card.DeployedTurn == match.Board.Turns)
+        {
+            throw new InvalidOperationException("Attacking card has already been deployed this turn.");
+        }
 
         var enemy = GetEnemy(playerId, match);
         enemy.Health -= card.Attack;
