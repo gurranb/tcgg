@@ -225,6 +225,8 @@ public class MatchService: IMatchService
         var targetField = player == P1 ? _match.Board.Player1Field : _match.Board.Player2Field;
         targetField.Add(card);
 
+        card.DeployedTurn = _match.Board.Turns;
+
         return card;
     }
     
