@@ -1,7 +1,10 @@
 name: Notify Discord
 
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: ["Build and Test Workflow"]
+    types:
+      - completed
 
 jobs:
   notify-discord:
