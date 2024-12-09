@@ -1,0 +1,66 @@
+name: Notify Discord
+
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Calculate line changes
+        id: line_changes
+        run: |
+          ADDED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $4}')
+          DELETED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $6}')
+          TOTAL=$((ADDED + DELETED))
+          echo "ADDED=${ADDED:-0}" >> $GITHUB_ENV
+          echo "DELETED=${DELETED:-0}" >> $GITHUB_ENV
+          echo "TOTAL=${TOTAL:-0}" >> $GITHUB_ENV
+
+      - name: Install cloc
+        run: sudo apt-get install -y cloc
+
+      - name: Count total lines of code
+        id: total_lines
+        run: |
+          cloc . --json > cloc.json
+          TOTAL_LINES=$(jq .SUM.code cloc.json || echo 0)
+          echo "TOTAL_LINES=${TOTAL_LINES:-0}" >> $GITHUB_ENV
+
+      - name: Send Discord notification
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
+          LINES_ADDED: ${{ env.ADDED }}
+          LINES_DELETED: ${{ env.DELETED }}
+          LINES_TOTAL: ${{ env.TOTAL }}
+          TOTAL_LINES_CODE: ${{ env.TOTAL_LINES }}
+        run: |
+          curl -X POST \
+          -H "Content-Type: application/json" \
+          -d '{
+            "embeds": [{
+              "title": "🚀 Manuell notifikation!",
+              "description": "Manuell körning av Discord-notifikationsworkflow.",
+              "color": 65280,
+              "fields": [
+                { 
+                  "name": "Antal rader kod ändrat", 
+                  "value": "**Lagt till:** ${LINES_ADDED}\n**Borttagna:** ${LINES_DELETED}\n**Totalt:** ${LINES_TOTAL}", 
+                  "inline": false
+                }, 
+                {
+                  "name": "Totalt antal rader kod i projektet",
+                  "value": "**${TOTAL_LINES_CODE} rader**",
+                  "inline": false
+                }
+              ],
+              "footer": { 
+                "text": "Manuell körning av workflow 🎉" 
+              },
+              "timestamp": "'"$(date -u +"%Y-%m-%dT%H:%M:%SZ")"'"
+            }]
+          }' \
+          $DISCORD_WEBHOOK_URL
