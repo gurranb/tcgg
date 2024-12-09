@@ -60,19 +60,30 @@ public class CardTests
     }
     
     [Fact]
-    public void DrawCard_ShouldReturnCard_WhenCardExist()
+    public void DrawCard_ShouldReturnCard_WhenCardExists()
     {
+        // Arrange
         _gameManager.StartMatch(1);
         var match = _matchService.GetMatch();
         var playerId = match.Player1.Id;
+
+        var card1 = new CardDefinition { Id = 1, Attack = 1, Health = 0, Name = "Human" };
+        var card2 = new CardDefinition { Id = 2, Attack = 3, Health = 2, Name = "Archer" };
+    
+        match.Player1.MatchDeck.Cards.Add(card1);
+        match.Player1.MatchDeck.Cards.Add(card2);
     
         var drawnCard = _matchService.DrawCard(playerId);
 
-        var actual = _matchService.GetPlayerHand(1);
-        var card = actual[3];
-        
-        Assert.Equal(drawnCard.Name, card.Name);
-        Assert.Equal(drawnCard.Id, card.Id);
+        var actualHand = _matchService.GetPlayerHand(playerId);
+    
+        Assert.Contains(actualHand, c => c.Id == drawnCard.Id && c.Name == drawnCard.Name);
+    
+        var expectedPosition = actualHand.Count - 1; 
+        var drawnCardInHand = actualHand[expectedPosition];
+    
+        Assert.Equal(drawnCard.Name, drawnCardInHand.Name);
+        Assert.Equal(drawnCard.Id, drawnCardInHand.Id);
     }
 
     [Fact]
@@ -87,6 +98,7 @@ public class CardTests
         _field2.Add(defenseCard);
         
         // Act
+        _match.Board.Turns = 3;
         _cardService.AttackCard(1,2,1,_match);
         
         // Assert 
@@ -102,7 +114,8 @@ public class CardTests
         var card = new CardDefinition {Id = 1, Health = 10, Attack = 5};
         _field1.Add(card);
         
-        // Act
+
+        _match.Board.Turns = 3;// Act
         var actual = _cardService.AttackPlayer(1, 1, _match);
         
         // Assert
@@ -118,6 +131,7 @@ public class CardTests
         _field1.Add(card);
 
         // Act
+        _match.Board.Turns = 3;
         var actual = _cardService.AttackPlayer(1, 1, _match);
 
         // Assert
@@ -144,20 +158,28 @@ public class CardTests
         // Arrange
         _gameManager.StartMatch(1);
         var match = _matchService.GetMatch();
-        
-        var card = new CardDefinition { Id = 1, Attack = 1, Health = 0, Name = "Human" };
-        var card2 = new CardDefinition { Id = 1, Attack = 3, Health = 2, Name = "Elf" };
+    
+        // Create unique cards for players
+        var card1 = new CardDefinition { Id = 1, Attack = 1, Health = 0, Name = "Human" };
+        var card2 = new CardDefinition { Id = 2, Attack = 3, Health = 2, Name = "Elf" };
 
-        match.Player1.Hand.Add(card);
+        // Clear hands to avoid any pre-existing cards
+        match.Player1.Hand.Clear();
+        match.Player2.Hand.Clear();
+
+        // Add cards to players' hands
+        match.Player1.Hand.Add(card1);
         match.Player2.Hand.Add(card2);
-        
+    
         // Act
-        var actual = _matchService.GetPlayerHand(1);
-        var actualp2 = _matchService.GetPlayerHand(2);
-        
+        var player1Hand = _matchService.GetPlayerHand(match.Player1.Id);
+        var player2Hand = _matchService.GetPlayerHand(match.Player2.Id);
+
+        var actualP1 = player1Hand[0];
+        var actualP2 = player2Hand[0];
+    
         // Assert
-        Assert.Equal(card.Name, actual[3].Name);
-        Assert.Equal(card2.Name, actualp2[3].Name);
-        
+        Assert.Equal(card1.Name, actualP1.Name);
+        Assert.Equal(card2.Name, actualP2.Name);
     }
 }

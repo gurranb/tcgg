@@ -16,6 +16,7 @@ public class CardService : ICardService
     {
         var deck = GetPlayerDeck(playerId, match);
         var random = new Random();
+        if(deck.Cards.Count == 0) return null;
         var card = deck.Cards[random.Next(deck.Cards.Count)];
        
         return card;
