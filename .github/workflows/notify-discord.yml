@@ -77,6 +77,7 @@ jobs:
         run: |
           # Get the commit timestamp
           TIMESTAMP="${{ github.event.head_commit.timestamp }}"
+          echo "The latest commit was made on: ${{ github.event.head_commit.timestamp }}"
 
           # Send Discord notification
           curl -X POST \
@@ -126,7 +127,7 @@ jobs:
               "footer": { 
                 "text": "Manuell körning av workflow 🎉 "
               },
-              "timestamp": "'"${env.TIMESTAMP}"'"
+              "timestamp": "'"${TIMESTAMP}"'"
             }]
           }' \
           $DISCORD_WEBHOOK_URL
