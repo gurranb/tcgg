@@ -8,6 +8,7 @@ public class Player
     public int Health { get; set; }
     public string Name { get; set; }
     public int MatchDeckId { get; set; }
+    public bool HasPlayedCard { get; set; } = true;
     public List<CardDefinition> Hand { get; set; } = new List<CardDefinition>();
     public List<CardDefinition> Graveyard { get; set; } = new List<CardDefinition>();
     public Deck MatchDeck { get; set; } = new Deck();

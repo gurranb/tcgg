@@ -115,8 +115,10 @@ public class MatchService: IMatchService
 
     public void StartTurn(int playerId)
     {
+        
         CheckGameStatus();
         var player = GetPlayer(playerId);
+        player.HasPlayedCard = false;
         var card = DrawRandomCard(playerId);
         if(player.Hand.Count > 7)
         {
@@ -234,6 +236,7 @@ public class MatchService: IMatchService
     {
 
         var player = GetPlayer(playerId);
+        CheckPlayerHasPlayedCard(player);
         var card = player.Hand.FirstOrDefault(c => c.Id == cardId) 
                    ?? throw new InvalidOperationException("Card not found in hand.");
 
@@ -243,8 +246,18 @@ public class MatchService: IMatchService
         targetField.Add(card);
 
         card.DeployedTurn = _match.Board.Turns;
+        
+        player.HasPlayedCard = true;
 
         return card;
+    }
+
+    private void CheckPlayerHasPlayedCard(Player player)
+    {
+        if (player.HasPlayedCard)
+        {
+            throw new InvalidOperationException("Player has already played a card this turn.");
+        }
     }
     
     public void AttackCard(int attackCardId, int defenseCardId, int playerId)
