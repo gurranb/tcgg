@@ -29,28 +29,21 @@ jobs:
       - name: Run tests
         run: dotnet test "$MY_TEST" --configuration Release
 
-  notify-discord:
-    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+notify-discord:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code again
         uses: actions/checkout@v4
-
       - name: Calculate line changes
         id: line_changes
         run: |
-          if [ "${{ github.event_name }}" = "push" ]; then
-            ADDED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $4}')
-            DELETED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $6}')
-          else
-            ADDED=0
-            DELETED=0
-          fi
+          ADDED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $4}')
+          DELETED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $6}')
           TOTAL=$((ADDED + DELETED))
-          echo "ADDED=${ADDED:-0}" >> $GITHUB_ENV
-          echo "DELETED=${DELETED:-0}" >> $GITHUB_ENV
-          echo "TOTAL=${TOTAL:-0}" >> $GITHUB_ENV
-
+          echo "ADDED=$ADDED" >> $GITHUB_ENV
+          echo "DELETED=$DELETED" >> $GITHUB_ENV
+          echo "TOTAL=$TOTAL" >> $GITHUB_ENV
       - name: Install cloc
         run: sudo apt-get install -y cloc
 
@@ -59,8 +52,8 @@ jobs:
         run: |
           cloc . --json > cloc.json
           TOTAL_LINES=$(jq .SUM.code cloc.json)
-          echo "TOTAL_LINES=${TOTAL_LINES:-0}" >> $GITHUB_ENV
-
+          echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
+          
       - name: Send Discord notification
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
@@ -73,28 +66,28 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "🚀 Ny uppdatering!",
-              "description": "Senaste commit:\n**${{ github.event.head_commit.message || 'Ingen commit-meddelande tillgängligt' }}**",
+              "title": "🚀 Ny uppdatering på main!",
+              "description": "Senaste commit:\n**${{ github.event.head_commit.message }}**",
               "color": 65280,
               "fields": [
                 { 
                   "name": "Gjort av", 
-                  "value": "**${{ github.actor || 'Okänd användare' }}**", 
+                  "value": "${{ github.event.head_commit.committer.name }}", 
                   "inline": true 
                 },
                 {
                   "name": "Antal rader kod ändrat", 
-                  "value": "**Lagt till:** ${LINES_ADDED}\n**Borttagna:** ${LINES_DELETED}\n**Totalt:** ${LINES_TOTAL}", 
+                  "value": "**Lagt till:** ${{ env.LINES_ADDED }}\n**Borttagna:** ${{ env.LINES_DELETED }}\n**Totalt:** ${{ env.LINES_TOTAL }}", 
                   "inline": false
                 }, 
                 {
                   "name": "Totalt antal rader kod i projektet",
-                  "value": "**${TOTAL_LINES_CODE} rader**",
+                  "value": "**${{ env.TOTAL_LINES_CODE }} rader**",
                   "inline": false
                 },
                 { 
                   "name": "Klicka här för commit-detaljer", 
-                  "value": "[Visa commit](https://github.com/${{ github.repository }}/commit/${{ github.sha || 'N/A' }})", 
+                  "value": "[Visa commit](https://github.com/${{ github.repository }}/commit/${{ github.sha }})", 
                   "inline": true 
                 },
                 { 
@@ -104,11 +97,9 @@ jobs:
                 }
               ],
               "footer": { 
-                "text": "Utfört via ${{
-                  github.event_name == 'workflow_dispatch' ? 'manuell dispatch' : 'push'
-                }} 🎉" 
+                "text": "Pushat till main 🎉" 
               },
-              "timestamp": "'"$(date -u +"%Y-%m-%dT%H:%M:%SZ")"'"
+              "timestamp": "'"${{ github.event.head_commit.timestamp }}"'"
             }]
           }' \
           $DISCORD_WEBHOOK_URL
