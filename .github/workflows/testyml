@@ -1,0 +1,114 @@
+name: Build and Test Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch: # Add support for manual dispatch
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    env:
+      MY_PATH: TCGGAPI/TCGGAPI.sln
+      MY_TEST: TCGGAPI/TCGGAPI.Tests/TCGGAPI.Tests.csproj
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Restore .NET dependencies
+        run: dotnet restore "$MY_PATH"
+
+      - name: Build the project
+        run: dotnet build "$MY_PATH" --configuration Release
+        
+      - name: Run tests
+        run: dotnet test "$MY_TEST" --configuration Release
+
+  notify-discord:
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code again
+        uses: actions/checkout@v4
+
+      - name: Calculate line changes
+        id: line_changes
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            ADDED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $4}')
+            DELETED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $6}')
+          else
+            ADDED=0
+            DELETED=0
+          fi
+          TOTAL=$((ADDED + DELETED))
+          echo "ADDED=${ADDED:-0}" >> $GITHUB_ENV
+          echo "DELETED=${DELETED:-0}" >> $GITHUB_ENV
+          echo "TOTAL=${TOTAL:-0}" >> $GITHUB_ENV
+
+      - name: Install cloc
+        run: sudo apt-get install -y cloc
+
+      - name: Count total lines of code
+        id: total_lines
+        run: |
+          cloc . --json > cloc.json
+          TOTAL_LINES=$(jq .SUM.code cloc.json)
+          echo "TOTAL_LINES=${TOTAL_LINES:-0}" >> $GITHUB_ENV
+
+      - name: Send Discord notification
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
+          LINES_ADDED: ${{ env.ADDED }}
+          LINES_DELETED: ${{ env.DELETED }}
+          LINES_TOTAL: ${{ env.TOTAL }}
+          TOTAL_LINES_CODE: ${{ env.TOTAL_LINES }}
+        run: |
+          curl -X POST \
+          -H "Content-Type: application/json" \
+          -d '{
+            "embeds": [{
+              "title": "🚀 Ny uppdatering!",
+              "description": "Senaste commit:\n**${{ github.event.head_commit.message || 'Ingen commit-meddelande tillgängligt' }}**",
+              "color": 65280,
+              "fields": [
+                { 
+                  "name": "Gjort av", 
+                  "value": "**${{ github.actor || 'Okänd användare' }}**", 
+                  "inline": true 
+                },
+                {
+                  "name": "Antal rader kod ändrat", 
+                  "value": "**Lagt till:** ${LINES_ADDED}\n**Borttagna:** ${LINES_DELETED}\n**Totalt:** ${LINES_TOTAL}", 
+                  "inline": false
+                }, 
+                {
+                  "name": "Totalt antal rader kod i projektet",
+                  "value": "**${TOTAL_LINES_CODE} rader**",
+                  "inline": false
+                },
+                { 
+                  "name": "Klicka här för commit-detaljer", 
+                  "value": "[Visa commit](https://github.com/${{ github.repository }}/commit/${{ github.sha || 'N/A' }})", 
+                  "inline": true 
+                },
+                { 
+                  "name": "Repository", 
+                  "value": "[Visa repository](https://github.com/${{ github.repository }})", 
+                  "inline": false 
+                }
+              ],
+              "footer": { 
+                "text": "Utfört via ${{
+                  github.event_name == 'workflow_dispatch' ? 'manuell dispatch' : 'push'
+                }} 🎉" 
+              },
+              "timestamp": "'"$(date -u +"%Y-%m-%dT%H:%M:%SZ")"'"
+            }]
+          }' \
+          $DISCORD_WEBHOOK_URL
