@@ -46,7 +46,7 @@ jobs:
           echo "TOTAL=$TOTAL" >> $GITHUB_ENV
 
       - name: Install cloc
-        run: sudo apt-get install -y clock
+        run: sudo apt-get install -y cloc
 
       - name: Count total lines of code
         id: total_lines
