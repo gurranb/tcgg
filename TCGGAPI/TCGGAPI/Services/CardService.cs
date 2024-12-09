@@ -37,9 +37,13 @@ public class CardService : ICardService
             throw new InvalidOperationException("Attacking card has already been deployed this turn.");
         }
         
+        CheckCardHasAttacked(attackerCard);
+        
         PerformAttack(attackerCard, defenderCard);
+        SetCardHasAttacked(attackerCard);
         CardDeath(attackerCard, attackerField, attackerGraveyard);
         CardDeath(defenderCard, defenderField, defenderGraveyard);
+        
     }
     public Player AttackPlayer(int playerId, int cardId, Match match)
     {
@@ -53,8 +57,11 @@ public class CardService : ICardService
             throw new InvalidOperationException("Attacking card has already been deployed this turn.");
         }
 
+        CheckCardHasAttacked(card);
         var enemy = GetEnemy(playerId, match);
         enemy.Health -= card.Attack;
+        SetCardHasAttacked(card);
+
 
         if (enemy.Health <= 0)
         {
@@ -103,6 +110,19 @@ public class CardService : ICardService
         {
             field.Remove(card);
             graveyard.Add(card);
+        }
+    }
+
+    private void SetCardHasAttacked(CardDefinition card)
+    {
+        card.HasAttacked = true;
+    }
+
+    private void CheckCardHasAttacked(CardDefinition card)
+    {
+        if (card.HasAttacked)
+        {
+            throw new InvalidOperationException("Card has already attacked this turn.");
         }
     }
 }   

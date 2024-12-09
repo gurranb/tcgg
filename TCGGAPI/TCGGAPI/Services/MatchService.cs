@@ -130,6 +130,15 @@ public class MatchService: IMatchService
     {
         _match.Board.CurrentPlayerId = playerId == 1 ? 2 : 1;
         _match.Board.Turns++;
+        var player = GetPlayer(playerId);
+        var playerField = playerId == _match.Board.Player1.Id ? _match.Board.Player1Field : _match.Board.Player2Field;
+        foreach (var card in playerField)
+        {
+            if (card.HasAttacked)
+            {
+                card.HasAttacked = false;
+            }
+        }
     }
     
     public void RestartMatch(int coinToss)

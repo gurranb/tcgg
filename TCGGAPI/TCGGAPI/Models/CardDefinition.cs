@@ -4,6 +4,7 @@ public class CardDefinition : Card
 {
     public Rarity Rarity { get; set; }
     public int DeployedTurn { get; set; }
+    public bool HasAttacked { get; set; }
 }
 
 public enum Rarity
