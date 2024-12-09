@@ -83,3 +83,5 @@ app.MapPost("/attackPlayer", (GameManager gm, int playerId, int cardId) => gm.At
 
 // Run the application
 app.Run();
+
+// test123

@@ -21,7 +21,7 @@ public class CardTests
     private List<CardDefinition> _graveyard1;
     private List<CardDefinition> _graveyard2;
 
-    
+    private string test123;
 
     public CardTests()
     {
