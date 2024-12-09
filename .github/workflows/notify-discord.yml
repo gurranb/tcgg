@@ -121,7 +121,7 @@ jobs:
                 }
               ],
               "footer": { 
-                "text": "Manuell körning av workflow 🎉 | Tidsstämpel: '"${{ github.event.head_commit.timestamp }}"'
+                "text": "Manuell körning av workflow 🎉 "
               },
               "timestamp": "'"${TIMESTAMP}"'"
             }]
