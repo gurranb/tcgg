@@ -17,9 +17,9 @@ jobs:
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
           COMMIT_AUTHOR=$(git log -1 --pretty=%an)
           COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
-          echo "COMMIT_AUTHOR=${COMMIT_AUTHOR}" >> $GITHUB_ENV
-          echo "COMMIT_BRANCH=${COMMIT_BRANCH}" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
+          echo "COMMIT_AUTHOR=$COMMIT_AUTHOR" >> $GITHUB_ENV
+          echo "COMMIT_BRANCH=$COMMIT_BRANCH" >> $GITHUB_ENV
 
       - name: Calculate line changes
         id: line_changes
@@ -39,18 +39,11 @@ jobs:
         run: |
           cloc . --json > cloc.json
           TOTAL_LINES=$(jq .SUM.code cloc.json || echo 0)
-          echo "TOTAL_LINES=${TOTAL_LINES:-0}" >> $GITHUB_ENV
+          echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
 
       - name: Send Discord notification
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
-          LINES_ADDED: ${{ env.ADDED }}
-          LINES_DELETED: ${{ env.DELETED }}
-          LINES_TOTAL: ${{ env.TOTAL }}
-          TOTAL_LINES_CODE: ${{ env.TOTAL_LINES }}
-          COMMIT_MESSAGE: ${{ env.COMMIT_MESSAGE }}
-          COMMIT_AUTHOR: ${{ env.COMMIT_AUTHOR }}
-          COMMIT_BRANCH: ${{ env.COMMIT_BRANCH }}
         run: |
           curl -X POST \
           -H "Content-Type: application/json" \
@@ -62,27 +55,27 @@ jobs:
               "fields": [
                 { 
                   "name": "Antal rader kod ändrat", 
-                  "value": "**Lagt till:** ${LINES_ADDED}\n**Borttagna:** ${LINES_DELETED}\n**Totalt:** ${LINES_TOTAL}", 
+                  "value": "**Lagt till:** '${{ env.ADDED }}'\n**Borttagna:** '${{ env.DELETED }}'\n**Totalt:** '${{ env.TOTAL }}'", 
                   "inline": false
                 }, 
                 {
                   "name": "Totalt antal rader kod i projektet",
-                  "value": "**${TOTAL_LINES_CODE} rader**",
+                  "value": "**${{ env.TOTAL_LINES }} rader**",
                   "inline": false
                 },
                 {
                   "name": "Commitmeddelande",
-                  "value": "**${COMMIT_MESSAGE}**",
+                  "value": "**${{ env.COMMIT_MESSAGE }}**",
                   "inline": false
                 },
                 {
                   "name": "Utfördes av",
-                  "value": "**${COMMIT_AUTHOR}**",
+                  "value": "**${{ env.COMMIT_AUTHOR }}**",
                   "inline": true
                 },
                 {
                   "name": "Branch",
-                  "value": "**${COMMIT_BRANCH}**",
+                  "value": "**${{ env.COMMIT_BRANCH }}**",
                   "inline": true
                 }
               ],
