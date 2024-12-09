@@ -27,3 +27,16 @@ jobs:
         
       - name: Run tests
         run: dotnet test "$MY_TEST" --configuration Release
+
+  notify-discord:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Discord notification
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK}}
+        run: |
+          curl -X POST \
+          -H "Content-Type: application/json" \
+          -d '{"content": "A new commit has been pushed to the `main` branch!"}' \
+          $DISCORD_WEBHOOK_URL
