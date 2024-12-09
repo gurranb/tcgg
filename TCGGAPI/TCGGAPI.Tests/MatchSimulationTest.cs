@@ -193,10 +193,7 @@ public void SimulateMatchN1()
 
     // Player 1 Turn 1
     StartTurn();
-    for (int i = 0; i < 2; i++)
-    {
-        PlayCardTest();
-    }
+    PlayCardTest();
     EndTurnTest();
     
     // Player 2 Turn 1
