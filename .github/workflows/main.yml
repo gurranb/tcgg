@@ -54,6 +54,12 @@ jobs:
           cloc . --json > cloc.json
           TOTAL_LINES=$(jq .SUM.code cloc.json)
           echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
+
+      - name: Get random GIF
+        id: gif
+        run: |
+          GIF_URL=$(curl -s "https://api.giphy.com/v1/gifs/random?api_key=${{ secrets.GIPHY_API_KEY }}&tag=celebration&rating=G" | jq -r .data[0].images.original.url)
+          echo "GIF_URL=$GIF_URL" >> $GITHUB_ENV
         
       - name: Send Discord notification
         env:
@@ -100,7 +106,10 @@ jobs:
               "footer": { 
                 "text": "Pushat till main 🎉" 
               },
-              "timestamp": "${{ github.event.head_commit.timestamp }}"
+              "timestamp": "${{ github.event.head_commit.timestamp }}",
+              "image": {
+                "url": "${{ env.GIF_URL }}"
+              }  
             }]
           }' \
           $DISCORD_WEBHOOK_URL
