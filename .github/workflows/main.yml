@@ -38,5 +38,18 @@ jobs:
         run: |
           curl -X POST \
           -H "Content-Type: application/json" \
-          -d '{"content": "A new commit has been pushed to the `main` branch!"}' \
+          -d '{
+            "embeds": [{
+              "title": "🚀 Ny uppdatering på main!",
+              "description": "Senaste commit:\n**${{ github.event.head_commit.message }}**",
+              "color": 65280,
+              "fields": [
+                { "name": "Gjort av", "value": "${{ github.event.head_commit.committer.name }}", "inline": true },
+                { "name": "Commit SHA", "value": "${{ github.sha }}", "inline": true }
+              ],
+              "footer": { "text": "Kolla in ändringarna i repot 🎉" },
+              "timestamp": "${{ github.event.head_commit.timestamp }}"
+            }]
+          }'
+          \
           $DISCORD_WEBHOOK_URL
