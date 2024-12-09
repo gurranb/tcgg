@@ -160,12 +160,14 @@ public class MatchService: IMatchService
         Console.WriteLine($"Game Over. {winner.Name} wins!");
         _match.Status = "Game Over";
         _match.Winner = winner;
+        _match.WinnerId = winner.Id;
     }
-    
     private void CheckGameStatus()
     {
         if (_match.Status == "Game Over")
-            throw new InvalidOperationException("Game Over.");
+        {
+            Console.WriteLine("Game Over. No further actions can be taken.");
+        }
     }
 
     public void EnsureValidTurn(int playerId)

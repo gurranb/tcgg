@@ -87,6 +87,7 @@ public class CardTests
         _field2.Add(defenseCard);
         
         // Act
+        _match.Board.Turns = 3;
         _cardService.AttackCard(1,2,1,_match);
         
         // Assert 
@@ -102,7 +103,8 @@ public class CardTests
         var card = new CardDefinition {Id = 1, Health = 10, Attack = 5};
         _field1.Add(card);
         
-        // Act
+
+        _match.Board.Turns = 3;// Act
         var actual = _cardService.AttackPlayer(1, 1, _match);
         
         // Assert
@@ -118,6 +120,7 @@ public class CardTests
         _field1.Add(card);
 
         // Act
+        _match.Board.Turns = 3;
         var actual = _cardService.AttackPlayer(1, 1, _match);
 
         // Assert

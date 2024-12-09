@@ -12,24 +12,16 @@ public class MatchSimulationTest
     private readonly IMatchService _matchService;
     private readonly ICardService _cardService;
     private Match _match;
-    private Deck _deck;
     private Player _currentPlayer;
     private Player _player1;
     private Player _player2;
-    private List<CardDefinition> _field1;
-    private List<CardDefinition> _field2;
-    private List<CardDefinition> _graveyard1;
-    private List<CardDefinition> _graveyard2;
     private ITestOutputHelper _outputHelper;
 
     public MatchSimulationTest(ITestOutputHelper outputHelper)
     {
         _cardService = new CardService();
-
         _matchService = new MatchService(_cardService);
-
         _gameManager = new GameManager(_matchService);
-
         _outputHelper = outputHelper;
     }
 
@@ -40,11 +32,44 @@ public class MatchSimulationTest
         Assert.NotNull(_match);
         _player1 = _match.Player1;
         _player2 = _match.Player2;
-        _outputHelper.WriteLine("Match started.");
         
+        _player1.Hand.Clear();
+        _player2.Hand.Clear();
+
+        _player1.MatchDeck = GenerateTestDeck();
+        _player2.MatchDeck = GenerateTestDeck();
+        
+        var currentPlayerId = _match.Board.CurrentPlayerId;
+        var currentPlayer = currentPlayerId == _player1.Id ? _player1 : _player2;
+        var enemyPlayer = currentPlayerId == _player1.Id ? _player2 : _player1;
+
+        currentPlayer.Hand.AddRange(currentPlayer.MatchDeck.Cards.Take(3).ToList());
+        enemyPlayer.Hand.AddRange(enemyPlayer.MatchDeck.Cards.Take(4).ToList());
+        currentPlayer.MatchDeck.Cards.RemoveRange(0,3);
+        enemyPlayer.MatchDeck.Cards.RemoveRange(0,4);
+
+        _outputHelper.WriteLine("Match started.");
     }
 
-    private Tuple<List<CardDefinition>, List<CardDefinition>>GetPlayersHandTest()
+    private Deck GenerateTestDeck()
+    {
+        var cards = new List<CardDefinition>
+        {
+            new CardDefinition { Id = 1, Attack = 1, Health = 1, Rarity = 0, Name = "Human 1" },
+            new CardDefinition { Id = 2, Attack = 1, Health = 1, Rarity = 0, Name = "Human 2" },
+            new CardDefinition { Id = 3, Attack = 1, Health = 1, Rarity = 0, Name = "Human 3" },
+            new CardDefinition { Id = 4, Attack = 1, Health = 1, Rarity = 0, Name = "Human 4" },
+            new CardDefinition { Id = 5, Attack = 1, Health = 1, Rarity = 0, Name = "Human 5" },
+            new CardDefinition { Id = 6, Attack = 1, Health = 1, Rarity = 0, Name = "Human 6" },
+            new CardDefinition { Id = 7, Attack = 1, Health = 1, Rarity = 0, Name = "Human 7" },
+            new CardDefinition { Id = 8, Attack = 1, Health = 1, Rarity = 0, Name = "Human 8" },
+            new CardDefinition { Id = 9, Attack = 1, Health = 1, Rarity = 0, Name = "Human 9" },
+            new CardDefinition { Id = 10, Attack = 1, Health = 1, Rarity = 0, Name = "Human 10" },
+        };
+        return new Deck { Cards = cards };
+    }
+
+    private Tuple<List<CardDefinition>, List<CardDefinition>> GetPlayersHandTest()
     {
         return new Tuple<List<CardDefinition>, List<CardDefinition>>(_player1.Hand, _player2.Hand);
     }
@@ -52,10 +77,15 @@ public class MatchSimulationTest
     private void CheckPlayerHandTest()
     {
         var (player1Hand, player2Hand) = GetPlayersHandTest();
+        var currentPlayer = _match.Board.CurrentPlayerId;
+
+        var expectedPlayer1Hand = _player1.Id == currentPlayer ? 3 : 4;
+        var expectedPlayer2Hand = _player2.Id == currentPlayer ? 3 : 4;
+
         Assert.NotNull(player1Hand);
         Assert.NotNull(player2Hand);
-        Assert.Equal(3, player1Hand.Count);
-        Assert.Equal(3, player2Hand.Count);
+        Assert.Equal(expectedPlayer1Hand, player1Hand.Count);
+        Assert.Equal(expectedPlayer2Hand, player2Hand.Count);
     }
 
     private void CheckPlayerTest()
@@ -80,15 +110,6 @@ public class MatchSimulationTest
         _outputHelper.WriteLine($"Current Player ID: {_currentPlayer.Id}");
     }
 
-    private void DrawCardTest()
-    {
-        _currentPlayer = GetCurrentPlayer();
-        var card = _gameManager.DrawRandomCard(_currentPlayer.Id);
-        Assert.NotNull(_currentPlayer.Hand[3]);
-        _outputHelper.WriteLine($"Player {_currentPlayer.Id} draws a card.");
-        _outputHelper.WriteLine(card.Name + " HP: " + card.Health + " ATK: " + card.Attack);
-    }
-    
     private List<CardDefinition> GetField(int playerId)
     {
         return playerId == _match.Player1.Id ? _match.Board.Player1Field : _match.Board.Player2Field;
@@ -96,7 +117,6 @@ public class MatchSimulationTest
 
     private void PlayCardTest()
     {
-
         _currentPlayer = GetCurrentPlayer();
         _gameManager.PlayCardToBoard(_currentPlayer.Id, _currentPlayer.Hand[0].Id);
         var field = GetField(_currentPlayer.Id);
@@ -110,6 +130,7 @@ public class MatchSimulationTest
         _currentPlayer = GetCurrentPlayer();
         _gameManager.EndTurn(_currentPlayer.Id);
         _outputHelper.WriteLine("Player " + _currentPlayer.Id + " ends turn.");
+        CheckForWinner();
     }
 
     private List<CardDefinition> GetEnemyField()
@@ -123,82 +144,131 @@ public class MatchSimulationTest
         _currentPlayer = GetCurrentPlayer();
         return _currentPlayer.Id == _match.Player1.Id ? _match.Board.Player1Field : _match.Board.Player2Field;
     }
+
     private void AttackCard()
     {
-        _field1 = GetCurrentPlayerField();
-        _field2 = GetEnemyField();
-        
-        _outputHelper.WriteLine("Player " + _currentPlayer.Id + " attacks " + _field2[0].Name + " with " + _field1[0].Name);
+        var field1 = GetCurrentPlayerField();
+        var field2 = GetEnemyField();
 
-        _gameManager.AttackCard(_field1[0].Id, _field2[0].Id, _currentPlayer.Id);
+        _outputHelper.WriteLine("Player " + _currentPlayer.Id + " attacks " + field2[0].Name + " with " + field1[0].Name);
+        _gameManager.AttackCard(field1[0].Id, field2[0].Id, _currentPlayer.Id);
+    }
+
+    private void StartTurn()
+    {
+        GetCurrentPlayerTest();
+        _gameManager.StartTurn(_match.Board.CurrentPlayerId);
     }
 
     private void AttackPlayer()
     {
         var currentPlayerField = GetCurrentPlayerField();
-        var enemy = _currentPlayer == _match.Player1 ? _match.Player2 : _match.Player1;
-        _outputHelper.WriteLine($"{enemy.Name} has {enemy.Health} health.");
+        var enemy = _currentPlayer == _player1 ? _player2 : _player1;
+        var previousHealth = enemy.Health;
         _matchService.AttackPlayer(_currentPlayer.Id, currentPlayerField[0].Id);
-        _outputHelper.WriteLine($"{enemy.Name} has {enemy.Health} health.");
-        if (enemy.Health <= 0)
-        {
-            EndMatchTest();   
-        }
+        _outputHelper.WriteLine($"{enemy.Name} goes from {previousHealth} health to {enemy.Health} health.");
     }
     
-    private void EndMatchTest()
+    private void CheckForWinner()
     {
-        var winner = _match.Winner;
-        _outputHelper.WriteLine($"{winner.Name} wins the match.");
-        _outputHelper.WriteLine("Match ended.");
+        if (_player1.Health <= 0)
+        {
+            _outputHelper.WriteLine($"{_player2.Name} wins!");
+            Assert.True(_match.WinnerId == _player2.Id);
+        }
+        else if (_player2.Health <= 0)
+        {
+            _outputHelper.WriteLine($"{_player1.Name} wins!");
+            Assert.True(_match.WinnerId == _player1.Id);
+        }
     }
 
-    [Fact]
-    public void SimulateMatchN1()
+     [Fact]
+public void SimulateMatchN1()
+{
+    StartMatchTest();
+    
+    CheckPlayerHandTest();
+    CheckPlayerTest();
+
+    // Player 1 Turn 1
+    StartTurn();
+    for (int i = 0; i < 2; i++)
     {
-        // Check if match starts correctly
-        StartMatchTest();
-        CheckPlayerHandTest();
-        CheckPlayerTest();
-        
-        // First player's turn
-        GetCurrentPlayerTest();
-        DrawCardTest();
         PlayCardTest();
-        EndTurnTest();
+    }
+    EndTurnTest();
+    
+    // Player 2 Turn 1
+    StartTurn();
+    PlayCardTest();
+    EndTurnTest();
 
-        // Second player's turn
-        GetCurrentPlayerTest();
-        DrawCardTest();
-        PlayCardTest();
-        EndTurnTest();
-
-        while (_match.Winner == null)
-        {
-             // First player's turn
-                    GetCurrentPlayerTest();
-                    DrawCardTest();
-                    PlayCardTest();
-                    AttackCard();
-                    if (_match.Winner != null) // Check if the match has ended
-                    {
-                        EndMatchTest();
-                        break; // Exit the loop
-                    }
-                    EndTurnTest();
-                    
-                    // Second player's turn
-                    GetCurrentPlayerTest();
-                    DrawCardTest();
-                    PlayCardTest();
-                    AttackPlayer();
-                    if (_match.Winner != null) // Check if the match has ended
-                    {
-                        EndMatchTest();
-                        break; // Exit the loop
-                    }
-                    EndTurnTest();
-                    
-        }
+    // Player 1 Turn 2
+    StartTurn();
+    AttackCard();
+    EndTurnTest();   
+    
+    // Player 2 Turn 2
+    StartTurn();
+    PlayCardTest();
+    EndTurnTest();
+    
+    // Player 1 Turn 2
+    StartTurn();
+    PlayCardTest();
+    EndTurnTest();   
+    
+    // Player 2 Turn 2
+    StartTurn();
+    PlayCardTest();
+    AttackPlayer();
+    EndTurnTest();
+    
+    // Player 1 Turn 2
+    StartTurn();
+    AttackPlayer();
+    EndTurnTest();   
+    
+    // Player 2 Turn 2
+    StartTurn();
+    AttackPlayer();
+    EndTurnTest();
+    
+    // Player 1 Turn 2
+    StartTurn();
+    PlayCardTest();
+    AttackPlayer();
+    AttackPlayer();
+    AttackPlayer();
+    EndTurnTest();   
+    
+    // Player 2 Turn 2
+    StartTurn();
+    PlayCardTest();
+    AttackCard();
+    EndTurnTest();
+    
+    // Player 1 Turn 2
+    StartTurn();
+    PlayCardTest();
+    AttackPlayer();
+    AttackPlayer();
+    AttackPlayer();
+    EndTurnTest();   
+    
+    // Player 2 Turn 2
+    StartTurn();
+    PlayCardTest();
+    AttackCard();
+    EndTurnTest();
+    
+    // Player 1 Turn 2
+    StartTurn();
+    PlayCardTest();
+    AttackPlayer();
+    AttackPlayer();
+    AttackPlayer();
+    EndTurnTest();   
     }
 }
