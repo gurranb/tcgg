@@ -54,6 +54,14 @@ jobs:
           cloc . --json > cloc.json
           TOTAL_LINES=$(jq .SUM.code cloc.json)
           echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
+
+      - name: Run ESLint
+        run: npm run lint > lint-results.txt
+
+      - name: Parse ESLint Results
+        run: |
+          ISSUES=$(grep "problem" lint-results.txt | wc -l)
+          echo "ISSUES=$ISSUES" >> $GITHUB_ENV
         
       - name: Send Discord notification
         env:
@@ -85,6 +93,10 @@ jobs:
                   "name": "Totalt antal rader kod i projektet",
                   "value": "**${{ env.TOTAL_LINES_CODE }} rader**",
                   "inline": false
+                },
+                {
+                  "name": "Kodkvalitet",
+                  "value": "Problem hittade: ${{ env.ISSUES }}"
                 },
                 { 
                   "name": "Klicka här för commit-detaljer", 
