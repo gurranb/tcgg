@@ -100,7 +100,7 @@ jobs:
               "footer": { 
                 "text": "Pushat till main 🎉" 
               },
-              "timestamp": "${{ github.event.head_commit.timestamp }}", 
+              "timestamp": "'"${{ github.event.head_commit.timestamp }}"'"
             }]
           }' \
           $DISCORD_WEBHOOK_URL
