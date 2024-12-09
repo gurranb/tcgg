@@ -5,33 +5,30 @@ using TCGGAPI.DTO;
 using TCGGAPI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
+// Configure services
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost",
-        policy => policy
-            .WithOrigins("http://localhost:5173") // Your frontend URL
-            .AllowAnyMethod()
-            .AllowAnyHeader());
+    options.AddPolicy("AllowLocalhost", policy =>
+        policy.WithOrigins("http://localhost:5173") // Frontend URL
+              .AllowAnyMethod()
+              .AllowAnyHeader());
 });
 
-builder.Services.AddDbContext<TCGGDBContext>(options => 
+builder.Services.AddDbContext<TCGGDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Register application services
 builder.Services.AddSingleton<ICardService, CardService>();
 builder.Services.AddSingleton<IMatchService, MatchService>();
 builder.Services.AddSingleton<GameManager>();
 
 var app = builder.Build();
 
-// CORS policy
-app.UseCors("AllowLocalhost");
-
-// Configure the HTTP request pipeline.
+// Middleware configuration
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -39,38 +36,27 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("AllowLocalhost");
 
+// API Endpoints
 
-app.MapGet("/game", (GameManager gm, int coinToss) =>
-{
-   return gm.StartMatch(coinToss);
-});
-
-app.MapGet("/reset", (GameManager gm, int coinToss) =>
-{
-    gm.RestartMatch(coinToss);
-});
-
-app.MapGet("/getMatch", (GameManager gm) => {
-    return gm.GetMatch();
-});
-
+// Game Management
+app.MapGet("/game", (GameManager gm, int coinToss) => gm.StartMatch(coinToss));
+app.MapGet("/reset", (GameManager gm, int coinToss) => gm.RestartMatch(coinToss));
+app.MapGet("/getMatch", (GameManager gm) => gm.GetMatch());
 app.MapGet("/getBoard", (GameManager gm) =>
 {
     var board = gm.GetBoard();
-
     var player1Dto = new PlayerDto
     {
         Name = board.Player1.Name,
         MatchDeckAmount = board.Player1.MatchDeck.Cards.Count
     };
-
     var player2Dto = new PlayerDto
     {
         Name = board.Player2.Name,
         MatchDeckAmount = board.Player2.MatchDeck.Cards.Count
     };
-    
     var boardDto = new BoardDto
     {
         Player1 = player1Dto,
@@ -79,55 +65,21 @@ app.MapGet("/getBoard", (GameManager gm) =>
         Player2Field = board.Player2Field,
         Turns = board.Turns
     };
-    
     return boardDto;
 });
 
-app.MapGet("/draw", (GameManager gm, int PlayerId) =>
-{
-    return gm.DrawCard(PlayerId);
-});
+// Player Actions
+app.MapGet("/draw", (GameManager gm, int playerId) => gm.DrawCard(playerId));
+app.MapGet("/startTurn", (GameManager gm, int playerId) => gm.StartTurn(playerId));
+app.MapGet("/drawRndCard", (GameManager gm, int playerId) => gm.DrawRandomCard(playerId));
+app.MapGet("/drawMultipleCards", (GameManager gm, int playerId, int amount) => gm.DrawMultipleCards(playerId, amount));
+app.MapGet("/getHand", (GameManager gm, int playerId) => gm.GetHand(playerId));
+app.MapPost("/endTurn", (GameManager gm, int playerId) => gm.EndTurn(playerId));
 
-app.MapGet("/startTurn", (GameManager gm, int PlayerId) =>
-{
-    gm.StartTurn(PlayerId);
-});
+// Card Actions
+app.MapPost("/playCard", (GameManager gm, int playerId, int cardId) => gm.PlayCardToBoard(playerId, cardId));
+app.MapPost("/attackCard", (GameManager gm, int attackCardId, int defenseCardId, int playerId) => gm.AttackCard(attackCardId, defenseCardId, playerId));
+app.MapPost("/attackPlayer", (GameManager gm, int playerId, int cardId) => gm.AttackPlayer(playerId, cardId));
 
-app.MapGet("/drawRndCard", (GameManager gm, int PlayerId) =>
-{
-    return gm.DrawRandomCard(PlayerId);
-});
-
-app.MapGet("/drawMultipleCards", (GameManager gm, int PlayerId, int amount) =>
-{
-    return gm.DrawMultipleCards(PlayerId, amount);
-});
-
-app.MapGet("/getHand", (GameManager gm, int PlayerId) =>
-{
-    return gm.GetHand(PlayerId);
-});
-
-app.MapPost("/playCard", (GameManager gm, int playerId, int cardId) =>
-{
-    gm.PlayCardToBoard(playerId, cardId);
-});
-
-app.MapPost("/attackCard", (GameManager gm, int attackCardId, int defenseCardId, int playerId) =>
-{
-    gm.AttackCard(attackCardId, defenseCardId, playerId);
-});
-
-// TODO: WIN OR LOSE condition
-app.MapPost("/attackPlayer", (GameManager gm, int playerId, int cardId) =>
-{
-    return gm.AttackPlayer(playerId, cardId);
-});
-
-app.MapPost("/endTurn", (GameManager gm, int playerId) =>
-{
-   gm.EndTurn(playerId); 
-});
-
+// Run the application
 app.Run();
-
