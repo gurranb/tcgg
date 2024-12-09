@@ -50,6 +50,5 @@ jobs:
               "footer": { "text": "Kolla in ändringarna i repot 🎉" },
               "timestamp": "${{ github.event.head_commit.timestamp }}"
             }]
-          }'
-          \
+          }' \
           $DISCORD_WEBHOOK_URL
