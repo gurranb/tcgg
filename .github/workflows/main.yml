@@ -44,6 +44,16 @@ jobs:
           echo "ADDED=$ADDED" >> $GITHUB_ENV
           echo "DELETED=$DELETED" >> $GITHUB_ENV
           echo "TOTAL=$TOTAL" >> $GITHUB_ENV
+
+      - name: Install cloc
+        run: sudo apt-get install -y clock
+
+      - name: Count total lines of code
+        id: total_lines
+        run: |
+          cloc . --json > cloc.json
+          TOTAL_LINES=$(jq .SUM.code cloc.json)
+          echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
         
       - name: Send Discord notification
         env:
@@ -51,6 +61,7 @@ jobs:
           LINES_ADDED: ${{ env.ADDED }}
           LINES_DELETED: ${{ env.DELETED }}
           LINES_TOTAL: ${{ env.TOTAL }}
+          TOTAL_LINES_CODE: ${{ env.TOTAL_LINES }}
         run: |
           curl -X POST \
           -H "Content-Type: application/json" \
@@ -69,7 +80,12 @@ jobs:
                   "name": "Antal rader kod ändrat", 
                   "value": "**Lagt till:** ${{ env.LINES_ADDED }}\n**Borttagna:** ${{ env.LINES_DELETED }}\n**Totalt:** ${{ env.LINES_TOTAL }}", 
                   "inline": false
-                },  
+                }, 
+                {
+                  "name": "Totalt antal rader kod i projektet",
+                  "value": "**${{ env.TOTAL_LINES_CODE }} rader**",
+                  "inline": false
+                },
                 { 
                   "name": "Klicka här för commit-detaljer", 
                   "value": "[Visa commit](https://github.com/${{ github.repository }}/commit/${{ github.sha }})", 
