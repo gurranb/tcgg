@@ -75,6 +75,7 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
+          TIMESTAMP="${{ github.event.head_commit.timestamp }}"
           curl -X POST \
           -H "Content-Type: application/json" \
           -d '{
@@ -122,7 +123,7 @@ jobs:
               "footer": { 
                 "text": "Manuell körning av workflow 🎉" 
               },
-              "timestamp": "'"${{ github.event.head_commit.timestamp }}"'"
+              "timestamp": "'"${TIMESTAMP}"'"
             }]
           }' \
           $DISCORD_WEBHOOK_URL
