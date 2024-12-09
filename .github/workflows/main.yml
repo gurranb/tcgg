@@ -32,6 +32,19 @@ jobs:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout code again
+        uses: actions/checkout@v4
+
+      - name: Calculate line changes
+        id: line_changes
+        run: |
+          ADDED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $4}')
+          DELETED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $6}')
+          TOTAL=$((ADDED + DELETED))
+          echo "ADDED=$ADDED" >> $GITHUB_ENV
+          echo "DELETED=$DELETED" >> $GITHUB_ENV
+          echo "TOTAL=$TOTAL" >> $GITHUB_ENV
+        
       - name: Send Discord notification
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK}}
