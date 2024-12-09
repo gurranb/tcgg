@@ -20,9 +20,9 @@ jobs:
         id: commit_info
         run: |
           # Extract commit details
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          COMMIT_AUTHOR=$(git log -1 --pretty=%an)
-          COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B | sed 's/"/\\"/g')  # Escape double quotes
+          COMMIT_AUTHOR=$(git log -1 --pretty=%an | sed 's/"/\\"/g')  # Escape double quotes
+          COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD | sed 's/"/\\"/g')  # Escape double quotes
           # Set environment variables in the proper format for GitHub Actions
           echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
           echo "COMMIT_AUTHOR=${COMMIT_AUTHOR}" >> $GITHUB_ENV
