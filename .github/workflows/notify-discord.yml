@@ -25,6 +25,12 @@ jobs:
           echo "COMMIT_AUTHOR=${COMMIT_AUTHOR}" >> $GITHUB_ENV
           echo "COMMIT_BRANCH=${COMMIT_BRANCH}" >> $GITHUB_ENV
 
+      - name: Get commit timestamp
+        id: commit_timestamp
+        run: |
+          TIMESTAMP=$(git log -1 --format=%cd --date=iso)
+          echo "TIMESTAMP=${TIMESTAMP}" >> $GITHUB_ENV
+
       - name: Calculate line changes
         id: line_changes
         run: |
@@ -75,11 +81,7 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
-          # Get the commit timestamp
-          TIMESTAMP="${{ github.event.head_commit.timestamp }}"
-          echo "The latest commit was made on: ${{ github.event.head_commit.timestamp }}"
-
-          # Send Discord notification
+          echo "The latest commit was made on: ${{ env.TIMESTAMP }}"
           curl -X POST \
           -H "Content-Type: application/json" \
           -d '{
@@ -127,7 +129,7 @@ jobs:
               "footer": { 
                 "text": "Manuell körning av workflow 🎉 "
               },
-              "timestamp": "'"${TIMESTAMP}"'"
+              "timestamp": "'"${{ env.TIMESTAMP }}"'"
             }]
           }' \
           $DISCORD_WEBHOOK_URL
