@@ -75,7 +75,10 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
         run: |
+          # Get the commit timestamp
           TIMESTAMP="${{ github.event.head_commit.timestamp }}"
+
+          # Send Discord notification
           curl -X POST \
           -H "Content-Type: application/json" \
           -d '{
