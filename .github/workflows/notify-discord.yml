@@ -82,9 +82,9 @@ jobs:
           -H "Content-Type: application/json" \
           -d '{
             "embeds": [{
-              "title": "🚀 Manuell notifikation!",
-              "description": "Manuell körning av Discord-notifikationsworkflow.",
-              "color": 65280,
+              "title": "🚀 TCGG-API!",
+              "description": "Main uppdaterad.",
+              "color": 5300192,
               "fields": [
                 { 
                   "name": "Antal rader kod ändrat", 
