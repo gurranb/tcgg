@@ -48,6 +48,9 @@ jobs:
       - name: Send Discord notification
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK}}
+          LINES_ADDED: ${{ env.ADDED }}
+          LINES_DELETED: ${{ env.DELETED }}
+          LINES_TOTAL: ${{ env.TOTAL }}
         run: |
           curl -X POST \
           -H "Content-Type: application/json" \
