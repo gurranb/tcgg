@@ -44,10 +44,25 @@ jobs:
               "description": "Senaste commit:\n**${{ github.event.head_commit.message }}**",
               "color": 65280,
               "fields": [
-                { "name": "Gjort av", "value": "${{ github.event.head_commit.committer.name }}", "inline": true },
-                { "name": "Commit SHA", "value": "${{ github.sha }}", "inline": true }
+                { 
+                  "name": "Gjort av", 
+                  "value": "${{ github.event.head_commit.committer.name }}", 
+                  "inline": true 
+                },
+                { 
+                  "name": "Klicka här för commit-detaljer", 
+                  "value": "[Visa commit](https://github.com/${{ github.repository }}/commit/${{ github.sha }})", 
+                  "inline": true 
+                },
+                { 
+                  "name": "Repository", 
+                  "value": "[Visa repository](https://github.com/${{ github.repository }})", 
+                  "inline": false 
+                }
               ],
-              "footer": { "text": "Kolla in ändringarna i repot 🎉" },
+              "footer": { 
+                "text": "Pushat till main 🎉" 
+              },
               "timestamp": "${{ github.event.head_commit.timestamp }}"
             }]
           }' \
