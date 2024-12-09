@@ -239,7 +239,17 @@ public void SimulateMatchN1()
     StartTurn();
     PlayCardTest();
     AttackPlayer();
-    AttackPlayer();
+    EndTurnTest();   
+    
+    // Player 2 Turn 2
+    StartTurn();
+    PlayCardTest();
+    AttackCard();
+    EndTurnTest();
+    
+    // Player 1 Turn 2
+    StartTurn();
+    PlayCardTest();
     AttackPlayer();
     EndTurnTest();   
     
@@ -253,22 +263,8 @@ public void SimulateMatchN1()
     StartTurn();
     PlayCardTest();
     AttackPlayer();
-    AttackPlayer();
-    AttackPlayer();
     EndTurnTest();   
     
-    // Player 2 Turn 2
-    StartTurn();
-    PlayCardTest();
-    AttackCard();
-    EndTurnTest();
-    
-    // Player 1 Turn 2
-    StartTurn();
-    PlayCardTest();
-    AttackPlayer();
-    AttackPlayer();
-    AttackPlayer();
-    EndTurnTest();   
+    // Add more rounds for this test :) 
     }
 }
