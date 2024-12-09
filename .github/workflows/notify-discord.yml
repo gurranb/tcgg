@@ -26,12 +26,30 @@ jobs:
       - name: Calculate line changes
         id: line_changes
         run: |
-          ADDED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $4}')
-          DELETED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $6}')
+          # Get the diff stats and capture the output
+          DIFF_STATS=$(git diff --stat HEAD~1 HEAD)
+          
+          # Print the diff stats for debugging
+          echo "Diff Stats: $DIFF_STATS"
+          
+          # Extract added and deleted lines using awk
+          ADDED=$(echo "$DIFF_STATS" | awk '/changed/ {print $4}')
+          DELETED=$(echo "$DIFF_STATS" | awk '/changed/ {print $6}')
+          
+          # Handle cases where ADDED or DELETED might not be found
+          ADDED=${ADDED:-0}
+          DELETED=${DELETED:-0}
           TOTAL=$((ADDED + DELETED))
-          echo "ADDED=${ADDED:-0}" >> $GITHUB_ENV
-          echo "DELETED=${DELETED:-0}" >> $GITHUB_ENV
-          echo "TOTAL=${TOTAL:-0}" >> $GITHUB_ENV
+          
+          # Print extracted values for debugging
+          echo "Added Lines: $ADDED"
+          echo "Deleted Lines: $DELETED"
+          echo "Total Lines Changed: $TOTAL"
+          
+          # Set the environment variables
+          echo "ADDED=${ADDED}" >> $GITHUB_ENV
+          echo "DELETED=${DELETED}" >> $GITHUB_ENV
+          echo "TOTAL=${TOTAL}" >> $GITHUB_ENV
 
       - name: Install cloc
         run: sudo apt-get install -y cloc
