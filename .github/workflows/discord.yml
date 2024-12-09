@@ -1,0 +1,88 @@
+name: Notify Discord
+
+on:
+  workflow_dispatch: # Allows manual triggering of the workflow
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get commit info
+        id: commit_info
+        run: |
+          # Extract commit details
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          COMMIT_AUTHOR=$(git log -1 --pretty=%an)
+          COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+          echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
+          echo "COMMIT_AUTHOR=$COMMIT_AUTHOR" >> $GITHUB_ENV
+          echo "COMMIT_BRANCH=$COMMIT_BRANCH" >> $GITHUB_ENV
+
+      - name: Calculate line changes
+        id: line_changes
+        run: |
+          ADDED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $4}')
+          DELETED=$(git diff --stat HEAD~1 HEAD | awk '/changed/ {print $6}')
+          TOTAL=$((ADDED + DELETED))
+          echo "ADDED=${ADDED:-0}" >> $GITHUB_ENV
+          echo "DELETED=${DELETED:-0}" >> $GITHUB_ENV
+          echo "TOTAL=${TOTAL:-0}" >> $GITHUB_ENV
+
+      - name: Install cloc
+        run: sudo apt-get install -y cloc
+
+      - name: Count total lines of code
+        id: total_lines
+        run: |
+          cloc . --json > cloc.json
+          TOTAL_LINES=$(jq .SUM.code cloc.json || echo 0)
+          echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
+
+      - name: Send Discord notification
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK }}
+        run: |
+          curl -X POST \
+          -H "Content-Type: application/json" \
+          -d '{
+            "embeds": [{
+              "title": "🚀 Manuell notifikation!",
+              "description": "Manuell körning av Discord-notifikationsworkflow.",
+              "color": 65280,
+              "fields": [
+                { 
+                  "name": "Antal rader kod ändrat", 
+                  "value": "**Lagt till:** '${{ env.ADDED }}'\n**Borttagna:** '${{ env.DELETED }}'\n**Totalt:** '${{ env.TOTAL }}'", 
+                  "inline": false
+                }, 
+                {
+                  "name": "Totalt antal rader kod i projektet",
+                  "value": "**${{ env.TOTAL_LINES }} rader**",
+                  "inline": false
+                },
+                {
+                  "name": "Commitmeddelande",
+                  "value": "**${{ env.COMMIT_MESSAGE }}**",
+                  "inline": false
+                },
+                {
+                  "name": "Utfördes av",
+                  "value": "**${{ env.COMMIT_AUTHOR }}**",
+                  "inline": true
+                },
+                {
+                  "name": "Branch",
+                  "value": "**${{ env.COMMIT_BRANCH }}**",
+                  "inline": true
+                }
+              ],
+              "footer": { 
+                "text": "Manuell körning av workflow 🎉" 
+              },
+              "timestamp": "'"$(date -u +"%Y-%m-%dT%H:%M:%SZ")"'"
+            }]
+          }' \
+          $DISCORD_WEBHOOK_URL
