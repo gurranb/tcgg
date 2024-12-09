@@ -1,11 +1,12 @@
 name: Notify Discord
 
 on:
-  workflow_dispatch: # Allows manual triggering of the workflow
+  workflow_dispatch:
 
 jobs:
   notify-discord:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -17,9 +18,10 @@ jobs:
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
           COMMIT_AUTHOR=$(git log -1 --pretty=%an)
           COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-          echo "COMMIT_MESSAGE=$COMMIT_MESSAGE" >> $GITHUB_ENV
-          echo "COMMIT_AUTHOR=$COMMIT_AUTHOR" >> $GITHUB_ENV
-          echo "COMMIT_BRANCH=$COMMIT_BRANCH" >> $GITHUB_ENV
+          # Set environment variables in the proper format for GitHub Actions
+          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
+          echo "COMMIT_AUTHOR=${COMMIT_AUTHOR}" >> $GITHUB_ENV
+          echo "COMMIT_BRANCH=${COMMIT_BRANCH}" >> $GITHUB_ENV
 
       - name: Calculate line changes
         id: line_changes
@@ -39,7 +41,7 @@ jobs:
         run: |
           cloc . --json > cloc.json
           TOTAL_LINES=$(jq .SUM.code cloc.json || echo 0)
-          echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
+          echo "TOTAL_LINES=${TOTAL_LINES}" >> $GITHUB_ENV
 
       - name: Send Discord notification
         env:
