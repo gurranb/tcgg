@@ -68,7 +68,7 @@ jobs:
           -d '{
             "embeds": [{
               "title": "🚀 Ny uppdatering på main!",
-              "description": "Senaste commit:\n**${{ github.event.head_commit.message }}**",
+              "description": "Senaste commit:\n**${{ github.event.head_commit.message.name }}**",
               "color": 65280,
               "fields": [
                 { 
