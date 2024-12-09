@@ -65,6 +65,11 @@ jobs:
                   "value": "${{ github.event.head_commit.committer.name }}", 
                   "inline": true 
                 },
+                {
+                  "name": "Antal rader kod ändrat", 
+                  "value": "**Lagt till:** ${{ env.LINES_ADDED }}\n**Borttagna:** ${{ env.LINES_DELETED }}\n**Totalt:** ${{ env.LINES_TOTAL }}", 
+                  "inline": false
+                },  
                 { 
                   "name": "Klicka här för commit-detaljer", 
                   "value": "[Visa commit](https://github.com/${{ github.repository }}/commit/${{ github.sha }})", 
