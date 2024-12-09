@@ -54,21 +54,7 @@ jobs:
           cloc . --json > cloc.json
           TOTAL_LINES=$(jq .SUM.code cloc.json)
           echo "TOTAL_LINES=$TOTAL_LINES" >> $GITHUB_ENV
-
-      - name: Get random GIF
-        id: gif
-        run: |
-          RESPONSE=$(curl -s "https://api.giphy.com/v1/gifs/random?api_key=${{ secrets.GIPHY_API_KEY }}&tag=celebration&rating=G")
-          echo "Raw Giphy response: $RESPONSE"
           
-          # Check if the 'data' array exists and is not empty
-          GIF_URL=$(echo $RESPONSE | jq -r '.data[0].images.original.url // "No GIF found"')
-          
-          if [ "$GIF_URL" == "No GIF found" ]; then
-            echo "No GIF found. Please check the Giphy API response." >> $GITHUB_ENV
-          else
-            echo "GIF_URL=$GIF_URL" >> $GITHUB_ENV
-        
       - name: Send Discord notification
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK}}
@@ -115,8 +101,6 @@ jobs:
                 "text": "Pushat till main 🎉" 
               },
               "timestamp": "${{ github.event.head_commit.timestamp }}",
-              "image": {
-                "url": "${{ env.GIF_URL }}"
               }  
             }]
           }' \
