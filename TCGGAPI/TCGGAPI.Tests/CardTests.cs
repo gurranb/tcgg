@@ -20,9 +20,7 @@ public class CardTests
     private List<CardDefinition> _field2;
     private List<CardDefinition> _graveyard1;
     private List<CardDefinition> _graveyard2;
-
-    private string GetCardName(int cardId) => _deck.Cards.First(x => x.Id == cardId).Name;
-
+    
     public CardTests()
     {
         _cardService = new CardService();
