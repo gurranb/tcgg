@@ -107,12 +107,22 @@ jobs:
                   "name": "Branch",
                   "value": "**${{ env.COMMIT_BRANCH }}**",
                   "inline": true
+                },
+                { 
+                  "name": "Klicka här för commit-detaljer", 
+                  "value": "[Visa commit](https://github.com/${{ github.repository }}/commit/${{ github.sha }})", 
+                  "inline": true 
+                },
+                { 
+                  "name": "Repository", 
+                  "value": "[Visa repository](https://github.com/${{ github.repository }})", 
+                  "inline": false 
                 }
               ],
               "footer": { 
                 "text": "Manuell körning av workflow 🎉" 
               },
-              "timestamp": "'"$(date -u +"%Y-%m-%dT%H:%M:%SZ")"'"
+              "timestamp": "'"${{ github.event.head_commit.timestamp }}"'"
             }]
           }' \
           $DISCORD_WEBHOOK_URL
