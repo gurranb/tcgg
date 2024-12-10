@@ -20,7 +20,7 @@ jobs:
         id: commit_info
         run: |
           # Extract commit details
-          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          COMMIT_MESSAGE_HEADER=$(git log -1 --pretty=%B | head -n 1) 
           COMMIT_AUTHOR=$(git log -1 --pretty=%an)
           COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
           # Set environment variables in the proper format for GitHub Actions
