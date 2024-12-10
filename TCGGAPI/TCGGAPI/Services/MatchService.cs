@@ -61,15 +61,6 @@ public class MatchService: IMatchService
         }
         
         _match.Board.CurrentPlayerId = coinToss == coinTossResult ? P1.Id : P2.Id;
-        
-        if (_match.Board.CurrentPlayerId == P1.Id)
-        {
-            DrawRandomCard(P2.Id);
-        }
-        else
-        {
-            DrawRandomCard(P1.Id);
-        }
         return _match;
     }
     
