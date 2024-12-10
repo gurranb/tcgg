@@ -281,6 +281,26 @@ public class CardTests
         Assert.Equal(card2.Name, actualP2.Name);
     }
     [Fact]
+    public void DisplayHand_ShouldReturnEmptyHand_WhenNoCardsInHand()
+    {
+        // Arrange
+        _gameManager.StartMatch(1);
+        var match = _matchService.GetMatch();
+
+        // Clear hands to ensure they are empty
+        match.Player1.Hand.Clear();
+        match.Player2.Hand.Clear();
+
+        // Act
+        var player1Hand = _matchService.GetPlayerHand(match.Player1.Id);
+        var player2Hand = _matchService.GetPlayerHand(match.Player2.Id);
+
+        // Assert
+        Assert.Empty(player1Hand); // Player 1 should have an empty hand
+        Assert.Empty(player2Hand); // Player 2 should have an empty hand
+    }
+    
+    [Fact]
     public void EndTurn_ShouldSwitchCurrentPlayer()
     {
         // Arrange
