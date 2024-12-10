@@ -39,14 +39,13 @@ public class MatchSimulationTest
         _player1.MatchDeck = GenerateTestDeck();
         _player2.MatchDeck = GenerateTestDeck();
         
-        var currentPlayerId = _match.Board.CurrentPlayerId;
-        var currentPlayer = currentPlayerId == _player1.Id ? _player1 : _player2;
-        var enemyPlayer = currentPlayerId == _player1.Id ? _player2 : _player1;
+        var currentPlayer = GetCurrentPlayer();
+        var enemyPlayer = currentPlayer.Id == _player1.Id ? _player2 : _player1;
 
         currentPlayer.Hand.AddRange(currentPlayer.MatchDeck.Cards.Take(3).ToList());
-        enemyPlayer.Hand.AddRange(enemyPlayer.MatchDeck.Cards.Take(4).ToList());
+        enemyPlayer.Hand.AddRange(enemyPlayer.MatchDeck.Cards.Take(3).ToList());
         currentPlayer.MatchDeck.Cards.RemoveRange(0,3);
-        enemyPlayer.MatchDeck.Cards.RemoveRange(0,4);
+        enemyPlayer.MatchDeck.Cards.RemoveRange(0,3);
 
         _outputHelper.WriteLine("Match started.");
     }
@@ -79,13 +78,10 @@ public class MatchSimulationTest
         var (player1Hand, player2Hand) = GetPlayersHandTest();
         var currentPlayer = _match.Board.CurrentPlayerId;
 
-        var expectedPlayer1Hand = _player1.Id == currentPlayer ? 3 : 4;
-        var expectedPlayer2Hand = _player2.Id == currentPlayer ? 3 : 4;
-
         Assert.NotNull(player1Hand);
         Assert.NotNull(player2Hand);
-        Assert.Equal(expectedPlayer1Hand, player1Hand.Count);
-        Assert.Equal(expectedPlayer2Hand, player2Hand.Count);
+        Assert.Equal(3, player1Hand.Count);
+        Assert.Equal(3, player2Hand.Count);
     }
 
     private void CheckPlayerTest()
