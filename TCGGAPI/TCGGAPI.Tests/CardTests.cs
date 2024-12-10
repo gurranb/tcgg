@@ -103,6 +103,106 @@ public class CardTests
         Assert.Equal(8, attackCard.Health);
         Assert.Equal(6, defenseCard.Health);
     }
+    
+    [Fact]
+    public void DrawCard_ShouldReturnNull_WhenDeckIsEmpty()
+    {
+        // Arrange
+        _gameManager.StartMatch(1);
+        var match = _matchService.GetMatch();
+        var playerId = match.Player1.Id;
+
+        // Clear the player's deck
+        match.Player1.MatchDeck.Cards.Clear();
+
+        // Act
+        var drawnCard = _matchService.DrawCard(playerId);
+
+        // Assert
+        Assert.Null(drawnCard);
+    }
+
+    [Fact]
+    public void AttackPlayer_ShouldNotReduceHealthBelowZero()
+    {
+        // Arrange 
+        _gameManager.StartMatch(1); // Ensure the match is started
+        _match = _matchService.GetMatch(); // Get the current match
+    
+        var card = new CardDefinition { Id = 1, Health = 2, Attack = 5 };
+        _match.Board.Player1Field.Add(card);
+        _gameManager.EndTurn(_match.Board.CurrentPlayerId == _match.Player1.Id ? _player1.Id : _player2.Id);
+        _gameManager.EndTurn(_match.Board.CurrentPlayerId == _match.Player1.Id ? _player1.Id : _player2.Id);
+    
+        // Ensure both players are set up
+        _match.Player1.Health = 10;
+        _match.Player2.Health = 10;
+    
+        // Act
+        var actual = _cardService.AttackPlayer(_match.Player1.Id, card.Id, _match);
+
+        // Assert
+        Assert.True(actual.Health >= 0);
+    }
+    
+    [Fact]
+    public void AttackCard_ShouldNotUpdateHealth_WhenAttackIsZero()
+    {
+        // Arrange
+        var attackCard = new CardDefinition { Id = 1, Attack = 0, Health = 10 };
+        var defenseCard = new CardDefinition { Id = 2, Attack = 2, Health = 11 };
+    
+        _field1.Add(attackCard);
+        _field2.Add(defenseCard);
+
+        // Act
+        _match.Board.Turns = 3;
+        _cardService.AttackCard(1, 2, 1, _match);
+
+        // Assert
+        Assert.Equal(8, attackCard.Health);
+        Assert.Equal(11, defenseCard.Health);
+    }
+    
+    [Fact]
+    public void DrawCards_ShouldReturnMultipleCards_WhenCalledMultipleTimes()
+    {
+        // Arrange
+        _gameManager.StartMatch(1);
+        var match = _matchService.GetMatch();
+        var playerId = match.Player1.Id;
+        
+        match.Player1.Hand.Clear();
+
+        var card1 = new CardDefinition { Id = 1, Attack = 1, Health = 0, Name = "Human" };
+        var card2 = new CardDefinition { Id = 2, Attack = 3, Health = 2, Name = "Elf" };
+    
+        match.Player1.MatchDeck.Cards.Add(card1);
+        match.Player1.MatchDeck.Cards.Add(card2);
+
+        // Act
+        var drawnCard1 = _matchService.DrawCard(playerId);
+        var drawnCard2 = _matchService.DrawCard(playerId);
+
+        // Assert
+        Assert.Contains(drawnCard1, match.Player1.Hand);
+        Assert.Contains(drawnCard2, match.Player1.Hand);
+        Assert.Equal(2, match.Player1.Hand.Count); // Ensure both cards are drawn
+    }
+
+    [Fact]
+    public void StartMatch_ShouldInitializePlayersCorrectly()
+    {
+        // Act
+        _gameManager.StartMatch(1);
+        var match = _matchService.GetMatch();
+
+        // Assert
+        Assert.NotNull(match.Player1);
+        Assert.NotNull(match.Player2);
+        Assert.Equal(10, match.Player1.Health);
+        Assert.Equal(10, match.Player2.Health);
+    }
 
     [Fact]
     public void AttackPlayer_ShouldUpdatePlayerHealth()
