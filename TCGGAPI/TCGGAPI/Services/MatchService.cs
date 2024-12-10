@@ -119,14 +119,18 @@ public class MatchService : IMatchService
         CheckGameStatus();
         var player = GetPlayer(playerId);
         player.HasPlayedCard = false;
-        var card = DrawRandomCard(playerId);
-
-        // If hand exceeds limit, move card to graveyard
-        if (player.Hand.Count > 7)
+        if (player.MatchDeck.Cards.Count > 0 && player.MatchDeck != null)
         {
-            player.Hand.Remove(card);
-            player.Graveyard.Add(card);
+            var card = DrawRandomCard(playerId);
+
+            // If hand exceeds limit, move card to graveyard
+            if (player.Hand.Count > 7)
+            {
+                player.Hand.Remove(card);
+                player.Graveyard.Add(card);
+            }
         }
+
         CheckHealth();
     }
 
