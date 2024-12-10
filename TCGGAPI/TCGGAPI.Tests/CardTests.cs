@@ -280,4 +280,18 @@ public class CardTests
         Assert.Equal(card1.Name, actualP1.Name);
         Assert.Equal(card2.Name, actualP2.Name);
     }
+    [Fact]
+    public void EndTurn_ShouldSwitchCurrentPlayer()
+    {
+        // Arrange
+        _gameManager.StartMatch(1);
+        var match = _matchService.GetMatch();
+        var currentPlayerId = match.Board.CurrentPlayerId;
+
+        // Act
+        _gameManager.EndTurn(currentPlayerId);
+
+        // Assert
+        Assert.NotEqual(currentPlayerId, match.Board.CurrentPlayerId);
+    }
 }
