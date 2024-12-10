@@ -48,7 +48,7 @@ public class MatchService : IMatchService
 
         _match = new Match
         {
-            Board = new Board { Player1 = P1, Player2 = P2, Player1Id = P1.Id, Player2Id = P2.Id },
+            Board = new Board { Player1 = P1, Player2 = P2, Player1Id = P1.Id, Player2Id = P2.Id, Turns = 1},
             Player1 = P1,
             Player2 = P2
         };
@@ -67,6 +67,7 @@ public class MatchService : IMatchService
 
         // Determine current player based on coin toss
         _match.Board.CurrentPlayerId = coinToss == coinTossResult ? P1.Id : P2.Id;
+        StartTurn(_match.Board.CurrentPlayerId);
         return _match;
     }
 
