@@ -24,7 +24,7 @@ jobs:
           COMMIT_AUTHOR=$(git log -1 --pretty=%an)
           COMMIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
           # Set environment variables in the proper format for GitHub Actions
-          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE_HEADER}" >> $GITHUB_ENV
           echo "COMMIT_AUTHOR=${COMMIT_AUTHOR}" >> $GITHUB_ENV
           echo "COMMIT_BRANCH=${COMMIT_BRANCH}" >> $GITHUB_ENV
 
@@ -35,19 +35,19 @@ jobs:
           if git rev-parse --verify HEAD~1 >/dev/null 2>&1; then
             # Get the diff stats and capture the output
             DIFF_STATS=$(git diff --stat HEAD~1 HEAD)
-      
+
             # Print the diff stats for debugging
             echo "Diff Stats: $DIFF_STATS"
-      
+
             # Extract added and deleted lines using awk
             ADDED=$(echo "$DIFF_STATS" | awk '/changed/ {print $4}')
             DELETED=$(echo "$DIFF_STATS" | awk '/changed/ {print $6}')
-      
+
             # Handle cases where ADDED or DELETED might not be found
             ADDED=${ADDED:-0}
             DELETED=${DELETED:-0}
             TOTAL=$((ADDED + DELETED))
-      
+
             # Print extracted values for debugging
             echo "Added Lines: $ADDED"
             echo "Deleted Lines: $DELETED"
@@ -58,7 +58,7 @@ jobs:
             DELETED=0
             TOTAL=0
           fi
-      
+
           # Set the environment variables
           echo "ADDED=${ADDED}" >> $GITHUB_ENV
           echo "DELETED=${DELETED}" >> $GITHUB_ENV
